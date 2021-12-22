@@ -4,6 +4,8 @@ import 'package:kasir_app/src/bloc/customer_bloc.dart';
 import 'package:kasir_app/src/bloc/products_bloc.dart';
 import 'package:kasir_app/src/bloc/supplier_bloc.dart';
 import 'package:kasir_app/src/bloc/transaksi_bloc.dart';
+import 'package:kasir_app/src/bloc/user_bloc.dart';
+import 'package:kasir_app/src/resources/util.dart';
 
 class CashierDrawer extends StatelessWidget {
   const CashierDrawer({Key? key}) : super(key: key);
@@ -30,7 +32,7 @@ class CashierDrawer extends StatelessWidget {
                 title: const Text('Produk'),
                 trailing: Container(
                   padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.black12,
                     shape: BoxShape.circle,
                   ),
@@ -54,7 +56,7 @@ class CashierDrawer extends StatelessWidget {
                 title: const Text('Supplier'),
                 trailing: Container(
                   padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.black12,
                     shape: BoxShape.circle,
                   ),
@@ -115,6 +117,23 @@ class CashierDrawer extends StatelessWidget {
                 },
               );
             },
+          ),
+          BlocListener<UserBloc, UserState>(
+            listener: (context, state) {
+              if (state is NotLoggedIn) {
+                Util.showSnackbar(context, 'Berhasil melakukan logout');
+                Navigator.of(context).pushReplacementNamed('/login');
+              } else if (state is UserError) {
+                Util.showSnackbar(context, state.message);
+              }
+            },
+            child: ListTile(
+              title: const Text('Logout'),
+              leading: const Icon(Icons.logout),
+              onTap: () {
+                context.read<UserBloc>().add(Logout());
+              },
+            ),
           ),
         ],
       ),

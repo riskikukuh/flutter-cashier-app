@@ -4,6 +4,7 @@ import 'package:kasir_app/src/config/database/sqlite/product_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/supplier_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/transaction_order_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/transaction_provider.dart';
+import 'package:kasir_app/src/config/database/sqlite/user_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -14,6 +15,7 @@ class DatabaseHelper {
   CustomerProvider customerProvider;
   SupplierProvider supplierProvider;
   TransaksiOrderProvider transaksiOrderProvider;
+  UserProvider userProvider;
 
   final int _databaseVersion = 1;
 
@@ -24,6 +26,7 @@ class DatabaseHelper {
     this.customerProvider,
     this.supplierProvider,
     this.transaksiOrderProvider,
+    this.userProvider,
   );
 
   Database? _database;
@@ -42,6 +45,7 @@ class DatabaseHelper {
     await customerProvider.setup(_database!);
     await supplierProvider.setup(_database!);
     await transaksiOrderProvider.setup(_database!);
+    await userProvider.setup(_database!);
   }
 
   Future<Database> _initDatabase() async {
@@ -62,5 +66,6 @@ class DatabaseHelper {
     await customerProvider.onCreate(db);
     await supplierProvider.onCreate(db);
     await transaksiOrderProvider.onCreate(db);
+    await userProvider.onCreate(db);
   }
 }

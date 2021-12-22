@@ -38,14 +38,12 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
     });
 
     on<AddTransaksi>((event, emit) async {
-      // print('AddTransaksi: ${cartBloc.state}');
       if (cartBloc.state is CartFetched) {
         List<OrderModel> allOrder = (cartBloc.state as CartFetched).order;
         int price = 0;
         for (var order in allOrder) {
           price += order.quantity * order.produk.harga;
         }
-        print('price : $price');
         if (state is TransaksiLoadSuccess) {
           List<TransaksiModel> oldTransaksi =
               (state as TransaksiLoadSuccess).allTransaksi;
@@ -75,9 +73,7 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
               message: error.message,
             ));
           }
-        } else {
-          print('AddTransaksi : $state');
-        }
+        } 
       } else {
         print('AddTransaksi Cart error : ${cartBloc.state}');
       }

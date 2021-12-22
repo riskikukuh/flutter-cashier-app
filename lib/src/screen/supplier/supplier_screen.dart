@@ -81,7 +81,7 @@ class SupplierScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              leading: Icon(
+              leading: const Icon(
                 Icons.business,
               ),
             ),
@@ -89,9 +89,9 @@ class SupplierScreen extends StatelessWidget {
         },
       );
     } else if (state is SupplierLoading) {
-      return CircularProgressIndicator();
+      return const CircularProgressIndicator();
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
   }
 

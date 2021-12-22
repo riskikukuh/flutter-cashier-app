@@ -4,12 +4,14 @@ import 'package:kasir_app/src/config/entity/produk_entity.dart';
 import 'package:kasir_app/src/config/entity/supplier_entity.dart';
 import 'package:kasir_app/src/config/entity/transaksi_entity.dart';
 import 'package:kasir_app/src/config/entity/transaksi_order_entity.dart';
+import 'package:kasir_app/src/config/entity/user_entity.dart';
 import 'package:kasir_app/src/models/customer_model.dart';
 import 'package:kasir_app/src/models/order_model.dart';
 import 'package:kasir_app/src/models/produk_model.dart';
 import 'package:kasir_app/src/models/supplier_model.dart';
 import 'package:kasir_app/src/models/transaksi_model.dart';
 import 'package:kasir_app/src/models/transaksi_order_model.dart';
+import 'package:kasir_app/src/models/user_model.dart';
 
 ProdukModel mapProdukEntityToProdukModel(
     ProdukEntity produk, SupplierEntity? supplier) {
@@ -29,6 +31,22 @@ ProdukEntity mapProdukModelToProdukEntity(ProdukModel produk) {
     nama: produk.nama,
     stok: produk.stok,
     supplier: produk.supplier?.id,
+  );
+}
+
+UserModel mapUserEntityToUserModel(UserEntity user) {
+  return UserModel(
+    id: user.id ?? -1,
+    nama: user.nama ?? 'Unknown',
+    username: user.username ?? 'Unknown',
+  );
+}
+
+UserEntity mapUserModelToUserEntity(UserModel user) {
+  return UserEntity(
+    id: user.id,
+    nama: user.nama,
+    username: user.username,
   );
 }
 

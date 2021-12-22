@@ -50,7 +50,7 @@ class TransaksiScreen extends StatelessWidget {
                         },
                         title: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.date_range,
                               color: Colors.grey,
                             ),
@@ -89,7 +89,7 @@ class TransaksiScreen extends StatelessWidget {
                                     children: [
                                       Text(
                                         transaksi.orders.first.produk.nama,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.black,
                                         ),
                                       ),
@@ -120,13 +120,13 @@ class TransaksiScreen extends StatelessWidget {
                                 ],
                               ),
                             const Divider(),
-                            Text(
+                            const Text(
                               'Total belanja',
                             ),
                             const SizedBox(height: 4),
                             Text(
                               'Rp' + formatter.format(transaksi.price),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               ),
@@ -142,7 +142,7 @@ class TransaksiScreen extends StatelessWidget {
                 },
               );
             }
-            return SizedBox();
+            return const SizedBox();
           },
         ),
       ),

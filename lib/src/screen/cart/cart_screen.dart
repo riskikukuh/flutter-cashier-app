@@ -25,10 +25,10 @@ class CartScreen extends StatelessWidget {
           },
           child: allOrder.isEmpty
               ? ListView(
-                  children: [
+                  children: const [
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(24),
+                        padding: EdgeInsets.all(24),
                         child: Text(
                           'Keranjang Kosong',
                         ),
@@ -51,7 +51,7 @@ class CartScreen extends StatelessWidget {
                           children: [
                             Text(
                               order.produk.nama,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -149,7 +149,7 @@ class CartScreen extends StatelessWidget {
                                         color: Colors.blue,
                                         borderRadius: BorderRadius.circular(8),
                                       ),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.add,
                                         color: Colors.white,
                                       ),
@@ -179,7 +179,7 @@ class CartScreen extends StatelessWidget {
                                                 BorderRadius.circular(8),
                                           ),
                                           elevation: 0,
-                                          child: Icon(
+                                          child: const Icon(
                                             Icons.delete,
                                             size: 28,
                                             color: Colors.grey,
@@ -291,8 +291,7 @@ class CartScreen extends StatelessWidget {
                                 .add(GetAllTransaksi());
                             Navigator.of(context).pushNamed('/checkout');
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('Keranjang masih kosong')));
+                            Util.showSnackbar(context, 'Keranjang masih kosong');
                           }
                         },
                       ),

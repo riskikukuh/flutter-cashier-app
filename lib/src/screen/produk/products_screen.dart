@@ -69,14 +69,14 @@ class ProductsScreen extends StatelessWidget {
                       Container(
                         height: 120,
                         padding: const EdgeInsets.fromLTRB(5, 12, 5, 12),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.blueAccent,
                           borderRadius: BorderRadius.all(Radius.circular(4.5)),
                         ),
                         child: Row(
-                          children: [
+                          children: const [
                             Expanded(
-                              child: const Icon(
+                              child: Icon(
                                 Icons.ac_unit,
                                 size: 48,
                                 color: Colors.white,
@@ -97,7 +97,7 @@ class ProductsScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Rp ' + produk.formatHarga(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500,
                                       fontSize: 17,
@@ -108,7 +108,7 @@ class ProductsScreen extends StatelessWidget {
                                   ),
                                   Text(
                                     produk.nama,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 14,
                                       color: Colors.black,
@@ -122,7 +122,7 @@ class ProductsScreen extends StatelessWidget {
                                   ),
                                   Text(
                                     'Sisa ' + produk.stok.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w300,
                                       fontSize: 11,

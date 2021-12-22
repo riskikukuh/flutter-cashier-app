@@ -19,7 +19,7 @@ class CheckoutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Checkout',
         ),
       ),
@@ -96,7 +96,7 @@ class CheckoutScreen extends StatelessWidget {
                         },
                       ),
                       hintText: 'Keterangan',
-                      border: OutlineInputBorder(
+                      border: const OutlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.grey,
                         ),
@@ -108,13 +108,13 @@ class CheckoutScreen extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Divider(
+                  const Divider(
                     color: Colors.black,
                   ),
                   const SizedBox(
                     height: 5,
                   ),
-                  Text(
+                  const Text(
                     'Pesanan',
                     style: TextStyle(
                       fontSize: 18,
@@ -227,12 +227,12 @@ class CheckoutScreen extends StatelessWidget {
                 ],
               );
             } else if (state is TransaksiLoading) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             } else if (state is TransaksiError) {
               return Text(state.message);
             }
 
-            return SizedBox();
+            return const SizedBox();
           },
         ),
       ),

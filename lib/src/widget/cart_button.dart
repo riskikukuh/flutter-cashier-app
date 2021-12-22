@@ -23,7 +23,7 @@ class CartButton extends StatelessWidget {
               right: 0,
               child: Container(
                 padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.blueGrey,
                   shape: BoxShape.circle,
                 ),
@@ -36,7 +36,7 @@ class CartButton extends StatelessWidget {
                       );
                     }
                     if (state is CartError) {
-                      return Text(
+                      return const Text(
                         '-1',
                       );
                     }

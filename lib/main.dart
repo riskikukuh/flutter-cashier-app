@@ -3,6 +3,7 @@ import 'package:kasir_app/src/bloc/customer_bloc.dart';
 import 'package:kasir_app/src/bloc/products_bloc.dart';
 import 'package:kasir_app/src/bloc/supplier_bloc.dart';
 import 'package:kasir_app/src/bloc/transaksi_bloc.dart';
+import 'package:kasir_app/src/bloc/user_bloc.dart';
 import 'package:kasir_app/src/config/database/sqlite/customer_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/database_helper.dart';
 import 'package:kasir_app/src/config/database/sqlite/order_provider.dart';
@@ -10,12 +11,15 @@ import 'package:kasir_app/src/config/database/sqlite/product_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/supplier_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/transaction_order_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/transaction_provider.dart';
+import 'package:kasir_app/src/config/database/sqlite/user_provider.dart';
+import 'package:kasir_app/src/config/session/session_helper.dart';
 import 'package:kasir_app/src/dataSource/local/local_data_source.dart';
 import 'package:kasir_app/src/repository/cart_repository.dart';
 import 'package:kasir_app/src/repository/customer_repository.dart';
 import 'package:kasir_app/src/repository/products_repository.dart';
 import 'package:kasir_app/src/repository/supplier_repository.dart';
 import 'package:kasir_app/src/repository/transaksi_repository.dart';
+import 'package:kasir_app/src/repository/user_repository.dart';
 import 'package:kasir_app/src/screen/cart/cart_screen.dart';
 import 'package:kasir_app/src/screen/checkout/checkout_screen.dart';
 import 'package:kasir_app/src/screen/customer/customer_screen.dart';
@@ -33,44 +37,54 @@ import 'package:kasir_app/src/screen/transaksi/transaksi_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  ProductProvider productProvider = ProductProvider();
-  TransaksiProvider transaksiProvider = TransaksiProvider();
-  OrderProvider orderProvider = OrderProvider();
-  CustomerProvider customerProvider = CustomerProvider();
-  SupplierProvider supplierProvider = SupplierProvider();
-  TransaksiOrderProvider transaksiOrderProvider = TransaksiOrderProvider();
+  final ProductProvider productProvider = ProductProvider();
+  final TransaksiProvider transaksiProvider = TransaksiProvider();
+  final OrderProvider orderProvider = OrderProvider();
+  final CustomerProvider customerProvider = CustomerProvider();
+  final SupplierProvider supplierProvider = SupplierProvider();
+  final TransaksiOrderProvider transaksiOrderProvider =
+      TransaksiOrderProvider();
+  final UserProvider userProvider = UserProvider();
 
-  DatabaseHelper dbHelper = DatabaseHelper(
+  final DatabaseHelper dbHelper = DatabaseHelper(
     productProvider,
     transaksiProvider,
     orderProvider,
     customerProvider,
     supplierProvider,
     transaksiOrderProvider,
+    userProvider,
   );
   await dbHelper.setup();
-  LocalDataSource localDataSource = LocalDataSource(
+  final SessionHelper sessionHelper = SessionHelper();
+  final LocalDataSource localDataSource = LocalDataSource(
     dbHelper: dbHelper,
+    sessionHelper: sessionHelper,
   );
-  ProductsRepository productsRepository = ProductsRepository(
+  final ProductsRepository productsRepository = ProductsRepository(
     localDataSource: localDataSource,
   );
 
-  CartRepository cartRepository = CartRepository(
+  final CartRepository cartRepository = CartRepository(
     localDataSource: localDataSource,
   );
 
-  CustomerRepository customerRepository = CustomerRepository(
+  final CustomerRepository customerRepository = CustomerRepository(
     localDataSource: localDataSource,
   );
 
-  SupplierRepository supplierRepository = SupplierRepository(
+  final SupplierRepository supplierRepository = SupplierRepository(
     localDataSource: localDataSource,
   );
 
-  TransaksiRepository transaksiRepository = TransaksiRepository(
+  final TransaksiRepository transaksiRepository = TransaksiRepository(
     localDataSource: localDataSource,
   );
+
+  final UserRepository userRepository = UserRepository(
+    localDataSource: localDataSource,
+  );
+
   runApp(
     MyApp(
       cartRepository: cartRepository,
@@ -78,6 +92,7 @@ void main() async {
       customerRepository: customerRepository,
       supplierRepository: supplierRepository,
       transaksiRepository: transaksiRepository,
+      userRepository: userRepository,
     ),
   );
 }
@@ -88,6 +103,7 @@ class MyApp extends StatelessWidget {
   final CustomerRepository customerRepository;
   final SupplierRepository supplierRepository;
   final TransaksiRepository transaksiRepository;
+  final UserRepository userRepository;
   const MyApp({
     Key? key,
     required this.cartRepository,
@@ -95,6 +111,7 @@ class MyApp extends StatelessWidget {
     required this.customerRepository,
     required this.supplierRepository,
     required this.transaksiRepository,
+    required this.userRepository,
   }) : super(key: key);
 
   @override
@@ -128,11 +145,16 @@ class MyApp extends StatelessWidget {
             transaksiRepository: transaksiRepository,
           ),
         ),
+        BlocProvider(
+          create: (context) => UserBloc(
+            userRepository: userRepository,
+          ),
+        ),
       ],
       child: MaterialApp(
         title: 'Cashier App',
         routes: {
-          '/login': (context) => const LoginScreen(),
+          '/login': (context) => LoginScreen(),
           '/home': (context) => const HomeScreen(),
           '/produk': (context) => const ProductsScreen(),
           '/formProduk': (context) => const FormProductScreen(),

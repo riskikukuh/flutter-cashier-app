@@ -234,11 +234,6 @@ class _FormProductScreenState extends State<FormProductScreen> {
     }
   }
 
-  _showSnackbar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

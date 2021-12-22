@@ -18,7 +18,7 @@ class DetailTransaksiScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Detail Transaksi',
         ),
       ),
@@ -35,7 +35,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Nomor Transaksi',
                     style: TextStyle(
                       fontSize: 17,
@@ -46,14 +46,14 @@ class DetailTransaksiScreen extends StatelessWidget {
                   ),
                   Text(
                     transaksi.id.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black54,
                     ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(
+                  const Text(
                     'Tanggal pembelian',
                     style: TextStyle(
                       fontSize: 17,
@@ -64,7 +64,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                   ),
                   Text(
                     _dateFormat.format(_date),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black54,
                     ),
                   ),
@@ -147,7 +147,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Rincian Pembayaran',
                     style: TextStyle(
                       fontSize: 16,
@@ -159,7 +159,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text(
                         'Metode Pembayaran',
                         style: TextStyle(
@@ -175,7 +175,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 5),
-                  Divider(
+                  const Divider(
                     color: Colors.black54,
                   ),
                   const SizedBox(height: 5),
@@ -184,27 +184,27 @@ class DetailTransaksiScreen extends StatelessWidget {
                     children: [
                       Text(
                         'Total Harga (${transaksi.orders.length} barang)',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black54,
                         ),
                       ),
                       Text(
                         'Rp${formatter.format(transaksi.price)}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black54,
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 5),
-                  Divider(
+                  const Divider(
                     color: Colors.black54,
                   ),
                   const SizedBox(height: 5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Total Bayar',
                         style: TextStyle(
                           fontSize: 16,
@@ -213,7 +213,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                       ),
                       Text(
                         'Rp${formatter.format(transaksi.price)}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),

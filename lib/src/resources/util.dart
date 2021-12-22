@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -35,5 +38,14 @@ class Util {
         ],
       ),
     );
+  }
+
+  static String hash(String password) {
+    var key = utf8.encode('k4s1r@k3y@password');
+    var bytes = utf8.encode(password);
+
+    var hmacSha256 = Hmac(sha256, key);
+    var digest = hmacSha256.convert(bytes);
+    return digest.toString();
   }
 }

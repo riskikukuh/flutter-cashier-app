@@ -108,7 +108,7 @@ class _FormCustomerScreenState extends State<FormCustomerScreen> {
         ],
       );
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
   }
 
@@ -127,6 +127,7 @@ class _FormCustomerScreenState extends State<FormCustomerScreen> {
         alignment: Alignment.center,
         child: Form(
           key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: ListView(
             padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
             children: [

@@ -5,9 +5,13 @@ import 'package:kasir_app/src/bloc/customer_bloc.dart';
 import 'package:kasir_app/src/bloc/products_bloc.dart';
 import 'package:kasir_app/src/bloc/supplier_bloc.dart';
 import 'package:kasir_app/src/bloc/transaksi_bloc.dart';
+import 'package:kasir_app/src/bloc/user_bloc.dart';
+import 'package:kasir_app/src/resources/util.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -21,13 +25,21 @@ class _SplashScreenState extends State<SplashScreen> {
     context.read<SupplierBloc>().add(GetAllSupplier());
     context.read<TransaksiBloc>().add(GetAllTransaksi());
     await Future.delayed(const Duration(seconds: 2));
-    Navigator.of(context).pushReplacementNamed('/home');
+    context.read<UserBloc>().add(IsAlreadyLogin());
   }
 
   @override
   void initState() {
     super.initState();
     initApp();
+  }
+
+  void navigateToHome() {
+    Navigator.of(context).pushReplacementNamed('/home');
+  }
+
+  void navigateToLogin() {
+    Navigator.of(context).pushReplacementNamed('/login');
   }
 
   @override
@@ -37,29 +49,40 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: SafeArea(
         top: true,
-        child: Container(
-          width: width,
-          color: Colors.blue,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              Icon(
-                Icons.monetization_on_rounded,
-                size: 70,
-                color: Colors.white,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "Cashier App",
-                style: TextStyle(
+        child: BlocListener<UserBloc, UserState>(
+          listener: (context, state) {
+            if (state is AlreadyLogin) {
+              navigateToHome();
+            } else  if (state is NotLoggedIn) {
+              navigateToLogin();
+            } else if (state is UserError) {
+              Util.showSnackbar(context, state.message);
+            }
+          },
+          child: Container(
+            width: width,
+            color: Colors.blue,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Icon(
+                  Icons.monetization_on_rounded,
+                  size: 70,
                   color: Colors.white,
-                  fontSize: 18,
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Cashier App",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

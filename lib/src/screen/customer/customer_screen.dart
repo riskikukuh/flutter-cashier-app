@@ -26,7 +26,7 @@ class CustomerScreen extends StatelessWidget {
             child: ListTile(
               title: Text(
                 cm.nama,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w400,
                 ),
@@ -89,7 +89,7 @@ class CustomerScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              leading: Icon(
+              leading: const Icon(
                 Icons.person,
               ),
             ),

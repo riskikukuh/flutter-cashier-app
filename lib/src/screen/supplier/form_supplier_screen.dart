@@ -65,7 +65,7 @@ class _FormSupplierScreenState extends State<FormSupplierScreen> {
               onPressed: () {
                 _formKey.currentState!.reset();
               },
-              child: Text(
+              child: const Text(
                 'Reset',
               ),
             ),
@@ -91,7 +91,7 @@ class _FormSupplierScreenState extends State<FormSupplierScreen> {
         ],
       );
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
   }
 

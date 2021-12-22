@@ -5,19 +5,25 @@ import 'package:kasir_app/src/config/entity/produk_entity.dart';
 import 'package:kasir_app/src/config/entity/supplier_entity.dart';
 import 'package:kasir_app/src/config/entity/transaksi_entity.dart';
 import 'package:kasir_app/src/config/entity/transaksi_order_entity.dart';
+import 'package:kasir_app/src/config/entity/user_entity.dart';
+import 'package:kasir_app/src/config/session/session_helper.dart';
 import 'package:kasir_app/src/models/customer_model.dart';
 import 'package:kasir_app/src/models/order_model.dart';
 import 'package:kasir_app/src/models/produk_model.dart';
 import 'package:kasir_app/src/models/supplier_model.dart';
 import 'package:kasir_app/src/models/transaksi_model.dart';
 import 'package:kasir_app/src/models/transaksi_order_model.dart';
+import 'package:kasir_app/src/models/user_model.dart';
 import 'package:kasir_app/src/resources/mapper.dart';
 import 'package:kasir_app/src/resources/result.dart';
+import 'package:kasir_app/src/resources/util.dart';
 
 class LocalDataSource {
   final DatabaseHelper dbHelper;
+  final SessionHelper sessionHelper;
   LocalDataSource({
     required this.dbHelper,
+    required this.sessionHelper,
   });
 
   /*
@@ -72,7 +78,7 @@ class LocalDataSource {
       return Error(message: e.toString());
     }
   }
-  
+
   Future<void> closeProdukProvider() async {
     await dbHelper.productProvider.close();
   }
@@ -456,5 +462,53 @@ class LocalDataSource {
     } on Exception catch (e) {
       return Error(message: e.toString());
     }
+  }
+
+  /* 
+    Login Section
+  */
+  Future<Result<UserModel?>> isAlreadyLogin() async {
+    try {
+      String? userId = await sessionHelper.isAlreadyLogin();
+      if (userId != null) {
+        UserEntity? user =
+            await dbHelper.userProvider.getUserById(int.parse(userId));
+        if (user != null) {
+          return Success(data: mapUserEntityToUserModel(user));
+        }
+      }
+      return Success(data: null);
+    } on Exception catch (e) {
+      return Error(message: e.toString());
+    }
+  }
+
+  Future<Result<UserModel?>> login(String username, String password) async {
+    try {
+      String hashedPassword = Util.hash(password);
+      UserEntity? user = await dbHelper.userProvider.login(username, hashedPassword);
+      if (user != null) {
+        await sessionHelper.setUserLogin(
+            user.id.toString(), user.nama.toString(), username);
+        return Success(data: mapUserEntityToUserModel(user));
+      }
+      return Success(data: null);
+    } on Exception catch (e) {
+      return Error(message: e.toString());
+    }
+  }
+
+  Future<Result<bool>> logout() async {
+    try {
+      await sessionHelper.cleaUserLogin();
+      String? userId = await sessionHelper.isAlreadyLogin();
+      return Success(data: userId == null);
+    } on Exception catch (e) {
+      return Error(message: e.toString());
+    }
+  }
+
+  Future<void> closeUserProvider() {
+    return dbHelper.userProvider.close();
   }
 }
