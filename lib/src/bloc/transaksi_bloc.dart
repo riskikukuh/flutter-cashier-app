@@ -64,10 +64,12 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
           if (transaksiResult is Success<TransaksiModel>) {
             cartBloc.add(ClearCart());
             productsBloc.add(GetAllProduct());
+            emit(PaymentTransaksiSuccess());
             emit(TransaksiLoadSuccess(
               allTransaksi: oldTransaksi..add(transaksiResult.data),
             ));
           } else {
+            emit(PaymentTransaksiFailure());
             Error error = transaksiResult as Error;
             emit(TransaksiError(
               message: error.message,

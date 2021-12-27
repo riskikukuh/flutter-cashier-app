@@ -114,6 +114,7 @@ class _FormSupplierScreenState extends State<FormSupplierScreen> {
             padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
             children: [
               TextFormField(
+                keyboardType: TextInputType.text,
                 controller: _namaController,
                 decoration: const InputDecoration(
                   hintText: 'Nama',
@@ -129,6 +130,7 @@ class _FormSupplierScreenState extends State<FormSupplierScreen> {
                 height: 10,
               ),
               TextFormField(
+                keyboardType: TextInputType.phone,
                 controller: _noTelpController,
                 decoration: const InputDecoration(
                   hintText: 'No Telepon',
@@ -141,6 +143,7 @@ class _FormSupplierScreenState extends State<FormSupplierScreen> {
                 },
               ),
               TextFormField(
+                keyboardType: TextInputType.text,
                 controller: _alamatController,
                 maxLines: 4,
                 decoration: const InputDecoration(

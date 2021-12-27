@@ -42,6 +42,7 @@ class CartScreen extends StatelessWidget {
                   itemBuilder: (context, i) {
                     OrderModel order = allOrder[i];
                     return Card(
+                      elevation: 3,
                       child: Container(
                         margin: const EdgeInsets.only(bottom: 16),
                         padding: const EdgeInsets.all(16),
@@ -81,90 +82,95 @@ class CartScreen extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                InkWell(
-                                  autofocus: true,
-                                  canRequestFocus: true,
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.black54,
                                     ),
-                                    elevation: 0,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: const Icon(
-                                        Icons.remove,
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                                    borderRadius: BorderRadius.circular(4),
                                   ),
-                                  onTap: () {
-                                    int newQty = order.quantity - 1;
-                                    if (newQty > 0) {
-                                      context.read<CartBloc>().add(EditOrder(
-                                            order: order.copyWith(
-                                                quantity: newQty),
-                                          ));
-                                    } else {
-                                      Util.showDialogAlert(
-                                          context,
-                                          'Menghapus Pesanan',
-                                          'Anda yakin ingin menghapus pesanan ini ?',
-                                          () {
-                                        context
-                                            .read<CartBloc>()
-                                            .add(DeleteOrder(order: order));
-                                        Navigator.of(context).pop();
-                                      });
-                                    }
-                                  },
-                                ),
-                                const SizedBox(
-                                  width: 3,
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 2, 10, 2),
-                                  child: Text(
-                                    order.quantity.toString(),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 3,
-                                ),
-                                InkWell(
-                                  autofocus: true,
-                                  canRequestFocus: true,
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    elevation: 0,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: Colors.blue,
-                                        borderRadius: BorderRadius.circular(8),
+                                  child: Row(
+                                    children: [
+                                      InkWell(
+                                        autofocus: true,
+                                        canRequestFocus: true,
+                                        child: Container(
+                                          padding: const EdgeInsets.all(4),
+                                          child: const Icon(
+                                            Icons.remove,
+                                            size: 16,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          int newQty = order.quantity - 1;
+                                          if (newQty > 0) {
+                                            context
+                                                .read<CartBloc>()
+                                                .add(EditOrder(
+                                                  order: order.copyWith(
+                                                      quantity: newQty),
+                                                ));
+                                          } else {
+                                            Util.showDialogAlert(
+                                                context,
+                                                'Menghapus Pesanan',
+                                                'Anda yakin ingin menghapus pesanan ini ?',
+                                                () {
+                                              context.read<CartBloc>().add(
+                                                  DeleteOrder(order: order));
+                                              Navigator.of(context).pop();
+                                            });
+                                          }
+                                        },
                                       ),
-                                      child: const Icon(
-                                        Icons.add,
-                                        color: Colors.white,
+                                      Container(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 2, 10, 2),
+                                        decoration: const BoxDecoration(
+                                          border: Border(
+                                            left: BorderSide(
+                                              color: Colors.black54,
+                                            ),
+                                            right: BorderSide(
+                                              color: Colors.black54,
+                                            ),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          order.quantity.toString(),
+                                          style: const TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 16,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      InkWell(
+                                        autofocus: true,
+                                        canRequestFocus: true,
+                                        child: Container(
+                                          padding: const EdgeInsets.all(4),
+                                          child: const Icon(
+                                            Icons.add,
+                                            size: 16,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          int newQty = order.quantity + 1;
+                                          if (newQty <= order.produk.stok) {
+                                            context
+                                                .read<CartBloc>()
+                                                .add(EditOrder(
+                                                  order: order.copyWith(
+                                                      quantity: newQty),
+                                                ));
+                                            // _quantity.text = newQty.toString();
+                                          }
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                  onTap: () {
-                                    int newQty = order.quantity + 1;
-                                    if (newQty <= order.produk.stok) {
-                                      context.read<CartBloc>().add(EditOrder(
-                                            order: order.copyWith(
-                                                quantity: newQty),
-                                          ));
-                                      // _quantity.text = newQty.toString();
-                                    }
-                                  },
                                 ),
                                 Expanded(
                                   child: Row(
@@ -291,7 +297,8 @@ class CartScreen extends StatelessWidget {
                                 .add(GetAllTransaksi());
                             Navigator.of(context).pushNamed('/checkout');
                           } else {
-                            Util.showSnackbar(context, 'Keranjang masih kosong');
+                            Util.showSnackbar(
+                                context, 'Keranjang masih kosong');
                           }
                         },
                       ),

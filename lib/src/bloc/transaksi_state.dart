@@ -7,6 +7,10 @@ class TransaksiInitial extends TransaksiState {}
 
 class TransaksiLoading extends TransaksiState {}
 
+class PaymentTransaksiSuccess extends TransaksiState {}
+
+class PaymentTransaksiFailure extends TransaksiState {}
+
 class TransaksiLoadSuccess extends TransaksiState {
   final List<TransaksiModel> allTransaksi;
   TransaksiLoadSuccess({

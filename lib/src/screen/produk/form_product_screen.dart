@@ -49,6 +49,7 @@ class _FormProductScreenState extends State<FormProductScreen> {
         children: [
           TextFormField(
             controller: _nama,
+            keyboardType: TextInputType.text,
             decoration: const InputDecoration(
               hintText: 'Nama Produk',
             ),
@@ -60,6 +61,7 @@ class _FormProductScreenState extends State<FormProductScreen> {
             },
           ),
           TextFormField(
+            keyboardType: TextInputType.number,
             controller: _harga,
             decoration: const InputDecoration(
               hintText: 'Harga',
@@ -72,6 +74,7 @@ class _FormProductScreenState extends State<FormProductScreen> {
             },
           ),
           TextFormField(
+            keyboardType: TextInputType.number,
             controller: _stok,
             decoration: const InputDecoration(
               hintText: 'Stok',

@@ -6,6 +6,7 @@ import 'package:kasir_app/src/bloc/cart_bloc.dart';
 import 'package:kasir_app/src/bloc/customer_bloc.dart';
 import 'package:kasir_app/src/bloc/transaksi_bloc.dart';
 import 'package:kasir_app/src/models/customer_model.dart';
+import 'package:kasir_app/src/resources/util.dart';
 
 class CheckoutScreen extends StatelessWidget {
   CheckoutScreen({Key? key}) : super(key: key);
@@ -27,8 +28,9 @@ class CheckoutScreen extends StatelessWidget {
         alignment: Alignment.center,
         child: BlocConsumer<TransaksiBloc, TransaksiState>(
           listener: (context, state) {
-            if (state is TransaksiLoadSuccess) {
-              print('Total transaksi : ${state.allTransaksi.length}');
+            if (state is PaymentTransaksiSuccess) {
+              Util.showSnackbar(context, "Transaksi berhasil");
+              Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => true);
             }
           },
           builder: (context, state) {

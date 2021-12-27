@@ -42,6 +42,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
             await productsRepository.addProduk(produk);
 
         if (responseAddProduk is Success<ProdukModel>) {
+          emit(ProductsNotifSuccess(message: 'Berhasil menambahkan produk'));
           emit(ProductsLoadSuccess(
               allProduk: oldProduk..add(responseAddProduk.data)));
         } else {
@@ -66,7 +67,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       if (resultEditProduk is Success<bool>) {
         if (resultEditProduk.data) {
           emit(ProductsNotifSuccess(
-            produk: event.produk,
+            // produk: event.produk,
             message: 'Berhasil mengubah produk',
           ));
           emit(ProductsLoadSuccess(

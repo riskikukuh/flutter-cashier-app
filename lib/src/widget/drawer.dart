@@ -129,7 +129,7 @@ class CashierDrawer extends StatelessWidget {
             },
             child: ListTile(
               title: const Text('Logout'),
-              leading: const Icon(Icons.logout),
+              // leading: const Icon(Icons.logout),
               onTap: () {
                 context.read<UserBloc>().add(Logout());
               },

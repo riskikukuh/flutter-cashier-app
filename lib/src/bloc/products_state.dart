@@ -20,10 +20,8 @@ class ProductsNotifError extends ProductsMessage {
 }
 
 class ProductsNotifSuccess extends ProductsMessage {
-  final ProdukModel produk;
   ProductsNotifSuccess({
     String? message,
-    required this.produk,
   }) : super(message: message ?? 'ProductsNotifSuccess');
 }
 
