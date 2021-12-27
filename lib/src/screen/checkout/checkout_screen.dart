@@ -149,10 +149,10 @@ class CheckoutScreen extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            'Rp ${formatter.format(cart.produk.harga)} - ${cart.quantity} pcs',
+                                            'Rp ${formatter.format(cart.produk.hargaJual)} - ${cart.quantity} pcs',
                                           ),
                                           Text(
-                                            'Rp ${formatter.format(cart.produk.harga * cart.quantity)}',
+                                            'Rp ${formatter.format(cart.produk.hargaJual * cart.quantity)}',
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16,
@@ -211,7 +211,7 @@ class CheckoutScreen extends StatelessWidget {
                           int total = 0;
                           if (state is CartFetched) {
                             for (var order in state.order) {
-                              total += order.quantity * order.produk.harga;
+                              total += order.quantity * order.produk.hargaJual;
                             }
                           }
                           return Text(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:kasir_app/src/bloc/products_bloc.dart';
 import 'package:kasir_app/src/models/produk_model.dart';
 import 'package:kasir_app/src/resources/util.dart';
@@ -7,7 +8,9 @@ import 'package:kasir_app/src/screen/produk/detail_product_screen.dart';
 import 'package:kasir_app/src/widget/cart_button.dart';
 
 class ProductsScreen extends StatelessWidget {
-  const ProductsScreen({Key? key}) : super(key: key);
+  ProductsScreen({Key? key, }) : super(key: key);
+
+  final NumberFormat _formatter = NumberFormat();
 
   Widget _mapProductStateToWidget(ProductsState state) {
     switch (state.runtimeType) {
@@ -96,7 +99,7 @@ class ProductsScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Rp ' + produk.formatHarga(),
+                                    'Rp ' + _formatter.format(produk.hargaJual),
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500,

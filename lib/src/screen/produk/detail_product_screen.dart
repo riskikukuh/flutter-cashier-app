@@ -86,7 +86,7 @@ class DetailProductScreen extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    'Rp' + _formatter.format(produk.harga),
+                    'Rp' + _formatter.format(produk.hargaJual),
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,

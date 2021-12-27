@@ -110,7 +110,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                               subtitle: Text(
                                 order.quantity.toString() +
                                     ' pcs x Rp' +
-                                    formatter.format(order.produk.harga),
+                                    formatter.format(order.produk.hargaJual),
                               ),
                             ),
                             const Divider(
@@ -126,7 +126,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                             const SizedBox(height: 4),
                             Text(
                               'Rp' +
-                                  formatter.format(order.quantity * order.produk.harga)
+                                  formatter.format(order.quantity * order.produk.hargaJual)
                                       .toString(),
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,

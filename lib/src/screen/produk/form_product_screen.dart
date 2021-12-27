@@ -27,7 +27,8 @@ class _FormProductScreenState extends State<FormProductScreen> {
   void initState() {
     if (widget.produk != null) {
       _nama.text = widget.produk!.nama;
-      _harga.text = widget.produk!.harga.toString();
+      _hargaJual.text = widget.produk!.hargaJual.toString();
+      _hargaStok.text = widget.produk!.hargaStok.toString();
       _stok.text = widget.produk!.stok.toString();
       _supplier = widget.produk!.supplier;
     }
@@ -35,7 +36,8 @@ class _FormProductScreenState extends State<FormProductScreen> {
   }
 
   final TextEditingController _nama = TextEditingController();
-  final TextEditingController _harga = TextEditingController();
+  final TextEditingController _hargaJual = TextEditingController();
+  final TextEditingController _hargaStok = TextEditingController();
   final TextEditingController _stok = TextEditingController();
   final _supplierController = TextEditingController();
   SupplierModel? _supplier;
@@ -62,9 +64,22 @@ class _FormProductScreenState extends State<FormProductScreen> {
           ),
           TextFormField(
             keyboardType: TextInputType.number,
-            controller: _harga,
+            controller: _hargaJual,
             decoration: const InputDecoration(
-              hintText: 'Harga',
+              hintText: 'Harga Jual',
+            ),
+            validator: (text) {
+              if (text == null || text.isEmpty) {
+                return 'Harga produk tidak boleh kosong';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            keyboardType: TextInputType.number,
+            controller: _hargaStok,
+            decoration: const InputDecoration(
+              hintText: 'Harga Stok',
             ),
             validator: (text) {
               if (text == null || text.isEmpty) {
@@ -137,11 +152,13 @@ class _FormProductScreenState extends State<FormProductScreen> {
                   onPressed: () {
                     if (widget.produk == null) {
                       _nama.clear();
-                      _harga.clear();
+                      _hargaJual.clear();
+                      _hargaStok.clear();
                       _stok.clear();
                     } else {
                       _nama.text = widget.produk!.nama;
-                      _harga.text = widget.produk!.harga.toString();
+                      _hargaJual.text = widget.produk!.hargaJual.toString();
+                      _hargaStok.text = widget.produk!.hargaStok.toString();
                       _stok.text = widget.produk!.stok.toString();
                       _supplier = widget.produk!.supplier;
                     }
@@ -166,7 +183,8 @@ class _FormProductScreenState extends State<FormProductScreen> {
                           _supplier != null) {
                         context.read<ProductsBloc>().add(AddProduct(
                               nama: _nama.text,
-                              harga: _harga.text,
+                              hargaJual: _hargaJual.text,
+                              hargaStok: _hargaStok.text,
                               stok: _stok.text,
                               supplier: _supplier!,
                             ));
@@ -184,7 +202,8 @@ class _FormProductScreenState extends State<FormProductScreen> {
                           _formKey.currentState!.validate() &&
                           _supplier != null) {
                         ProdukModel newProduk = widget.produk!.copyWith(
-                          harga: int.parse(_harga.text),
+                          hargaJual: int.parse(_hargaJual.text),
+                          hargaStok: int.parse(_hargaStok.text),
                           nama: _nama.text,
                           stok: int.parse(_stok.text),
                           supplier: _supplier,

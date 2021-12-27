@@ -7,12 +7,14 @@ class GetAllProduct extends ProductsEvent {}
 
 class AddProduct extends ProductsEvent {
   final String nama;
-  final String harga;
+  final String hargaJual;
+  final String hargaStok;
   final String stok;
   final SupplierModel supplier;
   AddProduct({
     required this.nama,
-    required this.harga,
+    required this.hargaJual,
+    required this.hargaStok,
     required this.stok,
     required this.supplier,
   });

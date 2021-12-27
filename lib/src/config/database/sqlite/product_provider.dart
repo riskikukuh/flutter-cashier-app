@@ -13,7 +13,8 @@ class ProductProvider {
         create table ${ProdukEntity.tableName} ( 
           ${ProdukEntity.columnId} integer primary key autoincrement, 
           ${ProdukEntity.columnNama} text not null,
-          ${ProdukEntity.columnHarga} integer default 0 not null,
+          ${ProdukEntity.columnHargaJual} integer default 0 not null,
+          ${ProdukEntity.columnHargaStok} integer default 0 not null,
           ${ProdukEntity.columnStok} integer default 0 not null,
           ${ProdukEntity.columnSupplier} integer, 
           ${ProdukEntity.columnDeletedAt} integer)
@@ -28,7 +29,8 @@ class ProductProvider {
       columns: [
         ProdukEntity.columnId,
         ProdukEntity.columnNama,
-        ProdukEntity.columnHarga,
+        ProdukEntity.columnHargaJual,
+        ProdukEntity.columnHargaStok,
         ProdukEntity.columnStok,
         ProdukEntity.columnSupplier,
         ProdukEntity.columnDeletedAt,
@@ -50,7 +52,8 @@ class ProductProvider {
       columns: [
         ProdukEntity.columnId,
         ProdukEntity.columnNama,
-        ProdukEntity.columnHarga,
+        ProdukEntity.columnHargaJual,
+        ProdukEntity.columnHargaStok,
         ProdukEntity.columnStok,
         ProdukEntity.columnSupplier,
       ],
@@ -81,14 +84,11 @@ class ProductProvider {
         where: '${ProdukEntity.columnId} = ?', whereArgs: [produk.id]);
     if (count != null && count > 0) {
       return count;
-    } else {
-      return -1;
     }
+    return -1;
   }
 
   Future<int> delete(int id) async {
-    // int? deleteResult = await db?.delete(ProdukEntity.tableName,
-    //     where: '${ProdukEntity.columnId} = ?', whereArgs: [id]);
     int? deleteResult = await db?.update(
       ProdukEntity.tableName,
       {
@@ -101,9 +101,8 @@ class ProductProvider {
     );
     if (deleteResult != null && deleteResult > 0) {
       return deleteResult;
-    } else {
-      return -1;
     }
+    return -1;
   }
 
   Future<bool> verifyStok(int produkId, int qty) async {

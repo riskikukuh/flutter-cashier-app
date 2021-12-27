@@ -18,7 +18,8 @@ ProdukModel mapProdukEntityToProdukModel(
   return ProdukModel(
     id: produk.id ?? -1,
     nama: produk.nama ?? 'Unknown',
-    harga: produk.harga ?? -1,
+    hargaJual: produk.hargaJual ?? -1,
+    hargaStok: produk.hargaStok ?? -1,
     stok: produk.stok ?? -1,
     supplier: mapSupplierEntityToSupplierModel(supplier),
   );
@@ -27,7 +28,8 @@ ProdukModel mapProdukEntityToProdukModel(
 ProdukEntity mapProdukModelToProdukEntity(ProdukModel produk) {
   return ProdukEntity(
     id: produk.id,
-    harga: produk.harga,
+    hargaJual: produk.hargaJual,
+    hargaStok: produk.hargaStok,
     nama: produk.nama,
     stok: produk.stok,
     supplier: produk.supplier?.id,

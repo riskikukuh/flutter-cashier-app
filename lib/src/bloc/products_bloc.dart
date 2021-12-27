@@ -33,7 +33,8 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         ProdukModel produk = ProdukModel(
           id: -1,
           nama: event.nama,
-          harga: int.parse(event.harga),
+          hargaJual: int.parse(event.hargaJual),
+          hargaStok: int.parse(event.hargaStok),
           stok: int.parse(event.stok),
           supplier: event.supplier,
         );

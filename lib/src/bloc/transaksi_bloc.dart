@@ -42,7 +42,7 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
         List<OrderModel> allOrder = (cartBloc.state as CartFetched).order;
         int price = 0;
         for (var order in allOrder) {
-          price += order.quantity * order.produk.harga;
+          price += order.quantity * order.produk.hargaJual;
         }
         if (state is TransaksiLoadSuccess) {
           List<TransaksiModel> oldTransaksi =

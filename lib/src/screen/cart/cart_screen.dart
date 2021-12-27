@@ -61,7 +61,7 @@ class CartScreen extends StatelessWidget {
                               height: 8,
                             ),
                             Text(
-                              'Rp ' + formatter.format(order.produk.harga),
+                              'Rp ' + formatter.format(order.produk.hargaJual),
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -249,7 +249,7 @@ class CartScreen extends StatelessWidget {
             int priceTotal = 0;
             if (state is CartFetched) {
               for (var order in state.order) {
-                priceTotal += (order.produk.harga * order.quantity);
+                priceTotal += (order.produk.hargaJual * order.quantity);
               }
               _isOrderNotEmpty = state.order.isNotEmpty;
             }
