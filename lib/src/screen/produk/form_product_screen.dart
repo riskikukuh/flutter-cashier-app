@@ -112,6 +112,7 @@ class _FormProductScreenState extends State<FormProductScreen> {
               }
               return DropdownSearch<SupplierModel>(
                 mode: Mode.BOTTOM_SHEET,
+                selectedItem: allSupplier.isNotEmpty ? allSupplier.first : null,
                 searchFieldProps: TextFieldProps(
                   controller: _supplierController,
                   maxLines: 1,
@@ -133,7 +134,6 @@ class _FormProductScreenState extends State<FormProductScreen> {
                 onChanged: (supplier) {
                   _supplier = supplier;
                 },
-                selectedItem: _supplier,
                 itemAsString: (supplier) => supplier?.nama ?? '',
                 items: allSupplier,
                 showSearchBox: true,

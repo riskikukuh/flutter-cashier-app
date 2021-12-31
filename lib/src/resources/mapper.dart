@@ -1,16 +1,22 @@
+import 'package:kasir_app/src/config/entity/cart_stok_entity.dart';
 import 'package:kasir_app/src/config/entity/customer_entity.dart';
+import 'package:kasir_app/src/config/entity/detail_transaksi_stok_entity.dart';
 import 'package:kasir_app/src/config/entity/order_entity.dart';
 import 'package:kasir_app/src/config/entity/produk_entity.dart';
 import 'package:kasir_app/src/config/entity/supplier_entity.dart';
 import 'package:kasir_app/src/config/entity/transaksi_entity.dart';
 import 'package:kasir_app/src/config/entity/transaksi_order_entity.dart';
+import 'package:kasir_app/src/config/entity/transaksi_stok_entity.dart';
 import 'package:kasir_app/src/config/entity/user_entity.dart';
+import 'package:kasir_app/src/models/cart_stok_model.dart';
 import 'package:kasir_app/src/models/customer_model.dart';
+import 'package:kasir_app/src/models/detail_transaksi_stok_model.dart';
 import 'package:kasir_app/src/models/order_model.dart';
 import 'package:kasir_app/src/models/produk_model.dart';
 import 'package:kasir_app/src/models/supplier_model.dart';
 import 'package:kasir_app/src/models/transaksi_model.dart';
 import 'package:kasir_app/src/models/transaksi_order_model.dart';
+import 'package:kasir_app/src/models/transaksi_stok_model.dart';
 import 'package:kasir_app/src/models/user_model.dart';
 
 ProdukModel mapProdukEntityToProdukModel(
@@ -156,5 +162,62 @@ TransaksiOrderModel mapOrderModelToTransaksiOrderModel(OrderModel order) {
     idTransaksi: -1,
     produk: order.produk,
     quantity: order.quantity,
+  );
+}
+
+TransaksiStokModel mapTransaksiStokEntityToTransaksiStokModel(
+    TransaksiStokEntity transaksi, List<DetailTransaksiStokModel> stok) {
+  return TransaksiStokModel(
+    id: transaksi.id ?? -1,
+    keterangan: transaksi.keterangan ?? '',
+    price: transaksi.price ?? -1,
+    tanggal: transaksi.tanggal ?? -1,
+    stok: stok,
+  );
+}
+
+TransaksiStokEntity mapTransaksiStokModelToTransaksiStokEntity(
+    TransaksiStokModel transaksi) {
+  return TransaksiStokEntity(
+    id: transaksi.id,
+    keterangan: transaksi.keterangan,
+    price: transaksi.price,
+    tanggal: transaksi.tanggal,
+  );
+}
+
+DetailTransaksiStokModel mapDetailTransaksiStokEntityToDetailTransaksiStokModel(DetailTransaksiStokEntity detailTransaksiStok, ProdukModel produk) {
+  return DetailTransaksiStokModel(
+    id: detailTransaksiStok.id ?? -1,
+    idTransaksiStok: detailTransaksiStok.idTransaksiStok ?? -1,
+    produk: produk,
+    quantity: detailTransaksiStok.quantity ?? -1,
+  );
+}
+
+DetailTransaksiStokEntity mapDetailTransaksiStokModelToDetailTransaksiStokEntity(DetailTransaksiStokModel detailTransaksiStok) {
+  return DetailTransaksiStokEntity(
+    id: detailTransaksiStok.id,
+    idTransaksiStok: detailTransaksiStok.idTransaksiStok,
+    idProduk: detailTransaksiStok.produk.id,
+    quantity: detailTransaksiStok.quantity,
+  );
+}
+
+CartStokModel mapCartStokEntityToCartStokModel(CartStokEntity cartStok, ProdukModel produk) {
+  return CartStokModel(
+    id: cartStok.id ?? -1,
+    date: cartStok.date ?? -1,
+    produk: produk,
+    quantity: cartStok.quantity ?? -1,
+  );
+}
+
+CartStokEntity mapCartStokModelToCartStokEntity(CartStokModel cartStok) {
+  return CartStokEntity(
+    id: cartStok.id,
+    date: cartStok.date,
+    produk: cartStok.produk.id,
+    quantity: cartStok.quantity,
   );
 }

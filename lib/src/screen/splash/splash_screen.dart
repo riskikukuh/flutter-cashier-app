@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kasir_app/src/bloc/cart_bloc.dart';
+import 'package:kasir_app/src/bloc/cartstok_bloc.dart';
 import 'package:kasir_app/src/bloc/customer_bloc.dart';
 import 'package:kasir_app/src/bloc/products_bloc.dart';
 import 'package:kasir_app/src/bloc/supplier_bloc.dart';
 import 'package:kasir_app/src/bloc/transaksi_bloc.dart';
+import 'package:kasir_app/src/bloc/transaksistok_bloc.dart';
 import 'package:kasir_app/src/bloc/user_bloc.dart';
 import 'package:kasir_app/src/resources/util.dart';
 
@@ -20,10 +22,12 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   initApp() async {
     context.read<CartBloc>().add(GetAllCart());
+    context.read<CartstokBloc>().add(GetAllCartStok());
     context.read<ProductsBloc>().add(GetAllProduct());
     context.read<CustomerBloc>().add(GetAllCustomer());
     context.read<SupplierBloc>().add(GetAllSupplier());
     context.read<TransaksiBloc>().add(GetAllTransaksi());
+    context.read<TransaksistokBloc>().add(GetAllTransaksiStok());
     await Future.delayed(const Duration(seconds: 2));
     context.read<UserBloc>().add(IsAlreadyLogin());
   }

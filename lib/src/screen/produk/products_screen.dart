@@ -3,13 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:kasir_app/src/bloc/products_bloc.dart';
 import 'package:kasir_app/src/models/produk_model.dart';
+import 'package:kasir_app/src/resources/enums.dart';
 import 'package:kasir_app/src/resources/util.dart';
 import 'package:kasir_app/src/screen/produk/detail_product_screen.dart';
 import 'package:kasir_app/src/widget/cart_button.dart';
+import 'package:kasir_app/src/widget/cart_stok_button.dart';
 
 class ProductsScreen extends StatelessWidget {
-  ProductsScreen({Key? key, }) : super(key: key);
+  ProductsScreen({
+    Key? key,
+    this.priceType = ProductsPriceType.jual,
+  }) : super(key: key);
 
+  final ProductsPriceType priceType;
   final NumberFormat _formatter = NumberFormat();
 
   Widget _mapProductStateToWidget(ProductsState state) {
@@ -56,6 +62,7 @@ class ProductsScreen extends StatelessWidget {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (contxet) => DetailProductScreen(
                           produk: produk,
+                          priceType: priceType,
                         )));
               },
               child: Card(
@@ -99,7 +106,12 @@ class ProductsScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Rp ' + _formatter.format(produk.hargaJual),
+                                    'Rp ' +
+                                        _formatter.format(
+                                          priceType == ProductsPriceType.jual
+                                              ? produk.hargaJual
+                                              : produk.hargaStok,
+                                        ),
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500,
@@ -161,7 +173,7 @@ class ProductsScreen extends StatelessWidget {
         title: const Text(
           'Produk',
         ),
-        actions: [
+        actions: isPriceJual() ? [
           const CartButton(),
           IconButton(
             onPressed: () {
@@ -169,6 +181,8 @@ class ProductsScreen extends StatelessWidget {
             },
             icon: const Icon(Icons.add),
           ),
+        ] : [
+          const CartStokButton(),
         ],
       ),
       body: Stack(
@@ -187,4 +201,6 @@ class ProductsScreen extends StatelessWidget {
       ),
     );
   }
+
+  bool isPriceJual() => priceType == ProductsPriceType.jual;
 }

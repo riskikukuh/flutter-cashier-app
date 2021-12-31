@@ -1,95 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:kasir_app/src/bloc/cart_bloc.dart';
-import 'package:kasir_app/src/bloc/customer_bloc.dart';
-import 'package:kasir_app/src/bloc/transaksi_bloc.dart';
-import 'package:kasir_app/src/models/customer_model.dart';
+import 'package:kasir_app/src/bloc/cartstok_bloc.dart';
+import 'package:kasir_app/src/bloc/transaksistok_bloc.dart';
 import 'package:kasir_app/src/resources/util.dart';
 
-class CheckoutScreen extends StatelessWidget {
-  CheckoutScreen({Key? key}) : super(key: key);
+class CheckoutStokScreen extends StatelessWidget {
+  CheckoutStokScreen({Key? key}) : super(key: key);
 
   late final formatter = NumberFormat();
-  final _searchController = TextEditingController();
   final _keteranganController = TextEditingController();
-  CustomerModel? _customer;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Checkout',
+          'Checkout Stok',
         ),
       ),
       body: Container(
         alignment: Alignment.center,
-        child: BlocConsumer<TransaksiBloc, TransaksiState>(
+        child: BlocConsumer<TransaksistokBloc, TransaksistokState>(
           listener: (context, state) {
-            if (state is PaymentTransaksiSuccess) {
-              Util.showSnackbar(context, "Transaksi berhasil");
-              Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+            if (state is PaymentTransaksiStokSuccess) {
+              Util.showSnackbar(context, state.message);
+              Navigator.of(context).pushNamedAndRemoveUntil('/transaksiStok', (route) => false);
+            } else if (state is PaymentTransaksiStokError) {
+              Util.showSnackbar(context, state.message);
             }
           },
           builder: (context, state) {
-            if (state is TransaksiLoadSuccess) {
+            if (state is TransaksiStokLoadSuccess) {
               return ListView(
                 padding: const EdgeInsets.fromLTRB(22, 12, 22, 12),
                 children: [
                   const SizedBox(
                     height: 8,
-                  ),
-                  const Text(
-                    'Pembeli',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  BlocConsumer<CustomerBloc, CustomerState>(
-                    listener: (context, state) {
-                      if (state is CustomerError) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(state.message)));
-                      } else if (state is CustomerLoadSuccess) {
-                        
-                      }
-                    },
-                    builder: (context, state) {
-                      List<CustomerModel> allCustomer = [];
-                      if (state is CustomerLoadSuccess) {
-                        allCustomer.addAll(state.allCustomer);
-                      }
-                      return DropdownSearch<CustomerModel>(
-                        selectedItem: allCustomer.isNotEmpty ? allCustomer.first : null,
-                        searchFieldProps: TextFieldProps(
-                          controller: _searchController,
-                          decoration: InputDecoration(
-                              suffix: IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              _searchController.clear();
-                            },
-                          )),
-                        ),
-                        onChanged: (customer) {
-                          _customer = customer;
-                        },
-                        showSearchBox: true,
-                        items: allCustomer,
-                        mode: Mode.BOTTOM_SHEET,
-                        itemAsString: (customer) => customer?.nama ?? '',
-                        isFilteredOnline: false,
-                      );
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
                   ),
                   TextField(
                     controller: _keteranganController,
@@ -129,12 +76,12 @@ class CheckoutScreen extends StatelessWidget {
                   const SizedBox(
                     height: 5,
                   ),
-                  BlocBuilder<CartBloc, CartState>(
+                  BlocBuilder<CartstokBloc, CartstokState>(
                     builder: (context, state) {
-                      if (state is CartFetched) {
+                      if (state is CartStokLoadSuccess) {
                         return Column(
                           children: [
-                            for (var cart in state.order)
+                            for (var cart in state.cartStok)
                               Card(
                                 margin: const EdgeInsets.only(top: 5),
                                 child: ListTile(
@@ -152,10 +99,10 @@ class CheckoutScreen extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            'Rp ${formatter.format(cart.produk.hargaJual)} - ${cart.quantity} pcs',
+                                            'Rp ${formatter.format(cart.produk.hargaStok)} - ${cart.quantity} pcs',
                                           ),
                                           Text(
-                                            'Rp ${formatter.format(cart.produk.hargaJual * cart.quantity)}',
+                                            'Rp ${formatter.format(cart.produk.hargaStok * cart.quantity)}',
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16,
@@ -209,12 +156,12 @@ class CheckoutScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      BlocBuilder<CartBloc, CartState>(
+                      BlocBuilder<CartstokBloc, CartstokState>(
                         builder: (context, state) {
                           int total = 0;
-                          if (state is CartFetched) {
-                            for (var order in state.order) {
-                              total += order.quantity * order.produk.hargaJual;
+                          if (state is CartStokLoadSuccess) {
+                            for (var order in state.cartStok) {
+                              total += order.quantity * order.produk.hargaStok;
                             }
                           }
                           return Text(
@@ -231,9 +178,9 @@ class CheckoutScreen extends StatelessWidget {
                   ),
                 ],
               );
-            } else if (state is TransaksiLoading) {
+            } else if (state is TransaksiStokLoading) {
               return const CircularProgressIndicator();
-            } else if (state is TransaksiError) {
+            } else if (state is TransaksiStokError) {
               return Text(state.message);
             }
 
@@ -243,11 +190,11 @@ class CheckoutScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
-        child: BlocBuilder<CartBloc, CartState>(
+        child: BlocBuilder<CartstokBloc, CartstokState>(
           builder: (context, state) {
             bool _isOrderNotEmpty = false;
-            if (state is CartFetched) {
-              _isOrderNotEmpty = state.order.isNotEmpty;
+            if (state is CartStokLoadSuccess) {
+              _isOrderNotEmpty = state.cartStok.isNotEmpty;
             }
             return ElevatedButton(
               child: const Text('Bayar'),
@@ -256,10 +203,8 @@ class CheckoutScreen extends StatelessWidget {
                     _isOrderNotEmpty ? Colors.blue : Colors.grey),
               ),
               onPressed: () {
-                if (_isOrderNotEmpty && _customer != null) {
-                  context.read<TransaksiBloc>().add(AddTransaksi(
-                        customer: _customer!,
-                        // orders: ,
+                if (_isOrderNotEmpty) {
+                  context.read<TransaksistokBloc>().add(AddTransaksiStok(
                         keterangan: _keteranganController.text,
                       ));
                 } else {

@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:kasir_app/src/bloc/cart_bloc.dart';
+import 'package:kasir_app/src/bloc/cartstok_bloc.dart';
 import 'package:kasir_app/src/bloc/products_bloc.dart';
-
 import 'package:kasir_app/src/models/order_model.dart';
 import 'package:kasir_app/src/models/produk_model.dart';
+import 'package:kasir_app/src/resources/enums.dart';
 import 'package:kasir_app/src/resources/util.dart';
 import 'package:kasir_app/src/screen/produk/form_product_screen.dart';
 import 'package:kasir_app/src/widget/cart_button.dart';
+import 'package:kasir_app/src/widget/cart_stok_button.dart';
 
 class DetailProductScreen extends StatelessWidget {
   final ProdukModel produk;
+  final ProductsPriceType priceType;
   DetailProductScreen({
     Key? key,
     required this.produk,
+    this.priceType = ProductsPriceType.jual,
   }) : super(key: key);
 
   final _formatter = NumberFormat();
@@ -28,7 +32,7 @@ class DetailProductScreen extends StatelessWidget {
         title: const Text(
           'Detail Produk',
         ),
-        actions: [
+        actions: isPriceJual() ? [
           const CartButton(),
           PopupMenuButton(
             onSelected: (item) {
@@ -58,6 +62,8 @@ class DetailProductScreen extends StatelessWidget {
               ),
             ],
           ),
+        ] : [
+          const CartStokButton(),
         ],
       ),
       body: Container(
@@ -86,7 +92,10 @@ class DetailProductScreen extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    'Rp' + _formatter.format(produk.hargaJual),
+                    'Rp' +
+                        _formatter.format(isPriceJual()
+                            ? produk.hargaJual
+                            : produk.hargaStok),
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -133,7 +142,11 @@ class DetailProductScreen extends StatelessWidget {
                           color: Colors.black45,
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.business, color: Colors.white, size: 28,),
+                        child: const Icon(
+                          Icons.business,
+                          color: Colors.white,
+                          size: 28,
+                        ),
                       ),
                       const SizedBox(width: 12),
                       Column(
@@ -169,18 +182,27 @@ class DetailProductScreen extends StatelessWidget {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
         child: ElevatedButton(
-          child: const Text('Tambah ke Keranjang'),
+          child: Text('Tambah ke Keranjang ${isPriceJual() ? '' : 'Stok'}'),
           onPressed: () {
-            context.read<CartBloc>().add(AddOrder(
-                    order: OrderModel(
-                  id: -1,
-                  quantity: 1,
-                  date: DateTime.now().millisecondsSinceEpoch,
-                  produk: produk,
-                )));
+            if (isPriceJual()) {
+              context.read<CartBloc>().add(AddOrder(
+                      order: OrderModel(
+                    id: -1,
+                    quantity: 1,
+                    date: DateTime.now().millisecondsSinceEpoch,
+                    produk: produk,
+                  )));
+            } else {
+              context.read<CartstokBloc>().add(AddCartStok(
+                    produk: produk,
+                    quantity: 1,
+                  ));
+            }
           },
         ),
       ),
     );
   }
+
+  bool isPriceJual() => priceType == ProductsPriceType.jual;
 }

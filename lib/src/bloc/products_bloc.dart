@@ -96,11 +96,16 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       Result<bool> resultDeleteProduk =
           await productsRepository.deleteProduk(event.produk);
       if (resultDeleteProduk is Success<bool>) {
-        emit(ProductsLoadSuccess(
-          allProduk: allProduk
-              .where((produk) => produk.id != event.produk.id)
-              .toList(),
-        ));
+        if (resultDeleteProduk.data) {
+          emit(ProductsLoadSuccess(
+            allProduk: allProduk
+                .where((produk) => produk.id != event.produk.id)
+                .toList(),
+          ));
+        } else {
+          emit(ProductsNotifError(message: 'Fail delete product'));
+          emit(ProductsLoadSuccess(allProduk: allProduk));
+        }
       } else {
         Error error = resultDeleteProduk as Error;
         emit(ProductsError(message: error.message));

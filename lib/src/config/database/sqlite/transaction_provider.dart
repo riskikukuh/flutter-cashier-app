@@ -50,7 +50,6 @@ class TransaksiProvider {
   }
 
   Future<int> insert(TransaksiEntity transaksi) async {
-    print(transaksi.toMapWithoutId());
     int? idTransaksi = await db?.insert(
       TransaksiEntity.tableName,
       transaksi.toMapWithoutId(),

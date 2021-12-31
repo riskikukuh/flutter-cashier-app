@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kasir_app/src/bloc/transaksi_bloc.dart';
-import 'package:kasir_app/src/models/transaksi_model.dart';
+import 'package:kasir_app/src/bloc/transaksistok_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:kasir_app/src/screen/transaksi/detail_transaksi_screen.dart';
+import 'package:kasir_app/src/models/transaksi_stok_model.dart';
+import 'package:kasir_app/src/resources/enums.dart';
+import 'package:kasir_app/src/screen/produk/products_screen.dart';
+import 'package:kasir_app/src/screen/transaksi_stok/detail_transaksi_stok_screen.dart';
 
-class TransaksiScreen extends StatelessWidget {
-  TransaksiScreen({Key? key}) : super(key: key);
+class TransaksiStokScreen extends StatelessWidget {
+  TransaksiStokScreen({Key? key}) : super(key: key);
 
   final _format = DateFormat('EEEE, d MMM yyyy');
   final formatter = NumberFormat();
@@ -16,35 +18,44 @@ class TransaksiScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Transaksi',
+          'Transaksi Stok',
         ),
+        actions: [
+          InkWell(
+            child: const Center(child: Text('New Stok')),
+            onTap: () {
+              Navigator.of(context).pushNamed('/produkStok');
+            },
+          ),
+          const SizedBox(width: 6),
+        ],
       ),
       body: Container(
         alignment: Alignment.center,
-        child: BlocBuilder<TransaksiBloc, TransaksiState>(
+        child: BlocBuilder<TransaksistokBloc, TransaksistokState>(
           builder: (context, state) {
-            if (state is TransaksiLoadSuccess) {
-              if (state.allTransaksi.isEmpty) {
+            if (state is TransaksiStokLoadSuccess) {
+              if (state.allTransaksiStok.isEmpty) {
                 return const Text(
-                  'Riwayat Transaksi kosong',
+                  'Riwayat Transaksi stok kosong',
                 );
               }
               return ListView.builder(
                 padding: const EdgeInsets.fromLTRB(14, 8, 14, 14),
-                itemCount: state.allTransaksi.length,
+                itemCount: state.allTransaksiStok.length,
                 itemBuilder: (context, i) {
-                  TransaksiModel transaksi = state.allTransaksi[i];
+                  TransaksiStokModel transaksi = state.allTransaksiStok[i];
                   DateTime date =
                       DateTime.fromMillisecondsSinceEpoch(transaksi.tanggal);
 
                   return Card(
                     margin: const EdgeInsets.only(top: 14),
                     child: ListTile(
-                      contentPadding: const EdgeInsets.fromLTRB(16, 10, 16, 8),
+                      contentPadding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>
-                              DetailTransaksiScreen(transaksi: transaksi),
+                              DetailTransaksiStokScreen(transaksi: transaksi),
                         ));
                       },
                       title: Row(
@@ -87,14 +98,14 @@ class TransaksiScreen extends StatelessWidget {
                                       CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      transaksi.orders.first.produk.nama,
+                                      transaksi.stok.first.produk.nama,
                                       style: const TextStyle(
                                         color: Colors.black,
                                       ),
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      transaksi.orders.first.quantity
+                                      transaksi.stok.first.quantity
                                               .toString() +
                                           ' pcs',
                                     ),
@@ -106,12 +117,12 @@ class TransaksiScreen extends StatelessWidget {
                           const SizedBox(
                             height: 5,
                           ),
-                          if (transaksi.orders.length - 1 > 0)
+                          if (transaksi.stok.length - 1 > 0)
                             Column(
                               children: [
                                 const SizedBox(height: 8),
                                 Text(
-                                  '+ ${transaksi.orders.length - 1} pesanan lainnya',
+                                  '+ ${transaksi.stok.length - 1} pesanan lainnya',
                                 ),
                                 const SizedBox(
                                   height: 2,

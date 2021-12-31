@@ -1,0 +1,3 @@
+enum ProductsPriceType {
+  jual, stok
+}

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kasir_app/src/bloc/cart_bloc.dart';
+import 'package:kasir_app/src/bloc/cartstok_bloc.dart';
 import 'package:kasir_app/src/bloc/customer_bloc.dart';
 import 'package:kasir_app/src/bloc/products_bloc.dart';
 import 'package:kasir_app/src/bloc/supplier_bloc.dart';
 import 'package:kasir_app/src/bloc/transaksi_bloc.dart';
+import 'package:kasir_app/src/bloc/transaksistok_bloc.dart';
 import 'package:kasir_app/src/bloc/user_bloc.dart';
 import 'package:kasir_app/src/resources/util.dart';
 
@@ -16,11 +19,17 @@ class CashierDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
+          DrawerHeader(
+            child: Container(
+              alignment: Alignment.center,
+              child: const Text(
+                'Cashier Apps',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
             ),
-            child: Text('Drawer Header'),
           ),
           BlocBuilder<ProductsBloc, ProductsState>(
             builder: (context, state) {
@@ -94,6 +103,58 @@ class CashierDrawer extends StatelessWidget {
               );
             },
           ),
+          const Divider(),
+          BlocBuilder<CartBloc, CartState>(
+            builder: (context, state) {
+              String countCustomer = '0';
+              if (state is CartFetched) {
+                countCustomer = state.order.length.toString();
+              }
+              return ListTile(
+                title: const Text('Keranjang Pembelian'),
+                trailing: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                    color: Colors.black12,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text(
+                    countCustomer.toString(),
+                  ),
+                ),
+                onTap: () {
+                  context.read<CartBloc>().add(GetAllCart());
+                  Navigator.of(context).pushNamed('/cart');
+                },
+              );
+            },
+          ),
+          BlocBuilder<CartstokBloc, CartstokState>(
+            builder: (context, state) {
+              String countCustomer = '0';
+              if (state is CartStokLoadSuccess) {
+                countCustomer = state.cartStok.length.toString();
+              }
+              return ListTile(
+                title: const Text('Keranjang Stok'),
+                trailing: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                    color: Colors.black12,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text(
+                    countCustomer.toString(),
+                  ),
+                ),
+                onTap: () {
+                  context.read<CartstokBloc>().add(GetAllCartStok());
+                  Navigator.of(context).pushNamed('/cartStok');
+                },
+              );
+            },
+          ),
+          const Divider(),
           BlocBuilder<TransaksiBloc, TransaksiState>(
             builder: (context, state) {
               String countCustomer = '0';
@@ -101,7 +162,7 @@ class CashierDrawer extends StatelessWidget {
                 countCustomer = state.allTransaksi.length.toString();
               }
               return ListTile(
-                title: const Text('Transaksi'),
+                title: const Text('Transaksi Pembelian'),
                 trailing: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: const BoxDecoration(
@@ -118,6 +179,31 @@ class CashierDrawer extends StatelessWidget {
               );
             },
           ),
+          BlocBuilder<TransaksistokBloc, TransaksistokState>(
+            builder: (context, state) {
+              String countCustomer = '0';
+              if (state is TransaksiStokLoadSuccess) {
+                countCustomer = state.allTransaksiStok.length.toString();
+              }
+              return ListTile(
+                title: const Text('Transaksi Stok'),
+                trailing: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                    color: Colors.black12,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text(
+                    countCustomer.toString(),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/transaksiStok');
+                },
+              );
+            },
+          ),
+          const Divider(),
           BlocListener<UserBloc, UserState>(
             listener: (context, state) {
               if (state is NotLoggedIn) {

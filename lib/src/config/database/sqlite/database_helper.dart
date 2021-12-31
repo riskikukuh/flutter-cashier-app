@@ -1,9 +1,12 @@
+import 'package:kasir_app/src/config/database/sqlite/cart_stok_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/customer_provider.dart';
+import 'package:kasir_app/src/config/database/sqlite/detail_transaksi_stok_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/order_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/product_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/supplier_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/transaction_order_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/transaction_provider.dart';
+import 'package:kasir_app/src/config/database/sqlite/transaksi_stok_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/user_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -16,6 +19,9 @@ class DatabaseHelper {
   SupplierProvider supplierProvider;
   TransaksiOrderProvider transaksiOrderProvider;
   UserProvider userProvider;
+  TransaksiStokProvider transaksiStokProvider;
+  DetailTransaksiStokProvider detailTransaksiStokProvider;
+  CartStokProvider cartStokProvider;
 
   final int _databaseVersion = 1;
 
@@ -26,7 +32,10 @@ class DatabaseHelper {
     this.customerProvider,
     this.supplierProvider,
     this.transaksiOrderProvider,
+    this.transaksiStokProvider,
+    this.detailTransaksiStokProvider,
     this.userProvider,
+    this.cartStokProvider,
   );
 
   Database? _database;
@@ -46,6 +55,9 @@ class DatabaseHelper {
     await supplierProvider.setup(_database!);
     await transaksiOrderProvider.setup(_database!);
     await userProvider.setup(_database!);
+    await transaksiStokProvider.setup(_database!);
+    await detailTransaksiStokProvider.setup(_database!);
+    await cartStokProvider.setup(_database!);
   }
 
   Future<Database> _initDatabase() async {
@@ -66,6 +78,9 @@ class DatabaseHelper {
     await customerProvider.onCreate(db);
     await supplierProvider.onCreate(db);
     await transaksiOrderProvider.onCreate(db);
+    await transaksiStokProvider.onCreate(db);
+    await detailTransaksiStokProvider.onCreate(db);
     await userProvider.onCreate(db);
+    await cartStokProvider.onCreate(db);
   }
 }

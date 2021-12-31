@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kasir_app/src/models/transaksi_model.dart';
+import 'package:kasir_app/src/models/transaksi_stok_model.dart';
 
-class DetailTransaksiScreen extends StatelessWidget {
+class DetailTransaksiStokScreen extends StatelessWidget {
   late final DateTime _date;
-  final TransaksiModel transaksi;
-  DetailTransaksiScreen({
+  final TransaksiStokModel transaksi;
+  DetailTransaksiStokScreen({
     Key? key,
     required this.transaksi,
   }) : super(key: key) {
@@ -36,7 +36,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Nomor Transaksi',
+                    'Nomor Transaksi Stok',
                     style: TextStyle(
                       fontSize: 17,
                     ),
@@ -63,7 +63,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    _dateFormat.format(_date),
+                    transaksi.keterangan,
                     style: const TextStyle(
                       color: Colors.black54,
                     ),
@@ -72,7 +72,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                     height: 10,
                   ),
                   const Text(
-                    'Catatan pembelian',
+                    'Catatan Pembelian',
                     style: TextStyle(
                       fontSize: 17,
                     ),
@@ -81,7 +81,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    transaksi.keterangan,
+                    _dateFormat.format(_date),
                     style: const TextStyle(
                       color: Colors.black54,
                     ),
@@ -105,7 +105,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  for (var order in transaksi.orders)
+                  for (var order in transaksi.stok)
                     Card(
                       elevation: 3,
                       margin: const EdgeInsets.only(bottom: 18),
@@ -128,7 +128,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                               subtitle: Text(
                                 order.quantity.toString() +
                                     ' pcs x Rp' +
-                                    formatter.format(order.produk.hargaJual),
+                                    formatter.format(order.produk.hargaStok),
                               ),
                             ),
                             const Divider(
@@ -146,7 +146,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                               'Rp' +
                                   formatter
                                       .format(order.quantity *
-                                          order.produk.hargaJual)
+                                          order.produk.hargaStok)
                                       .toString(),
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -203,7 +203,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Total Harga (${transaksi.orders.length} barang)',
+                        'Total Harga (${transaksi.stok.length} barang)',
                         style: const TextStyle(
                           color: Colors.black54,
                         ),
