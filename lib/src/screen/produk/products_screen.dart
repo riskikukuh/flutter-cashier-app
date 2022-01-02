@@ -6,8 +6,10 @@ import 'package:kasir_app/src/models/produk_model.dart';
 import 'package:kasir_app/src/resources/enums.dart';
 import 'package:kasir_app/src/resources/util.dart';
 import 'package:kasir_app/src/screen/produk/detail_product_screen.dart';
+import 'package:kasir_app/src/screen/produk/search_products_screen.dart';
 import 'package:kasir_app/src/widget/cart_button.dart';
 import 'package:kasir_app/src/widget/cart_stok_button.dart';
+import 'package:kasir_app/src/widget/search_button.dart';
 
 class ProductsScreen extends StatelessWidget {
   ProductsScreen({
@@ -173,17 +175,24 @@ class ProductsScreen extends StatelessWidget {
         title: const Text(
           'Produk',
         ),
-        actions: isPriceJual() ? [
-          const CartButton(),
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed('/formProduk');
-            },
-            icon: const Icon(Icons.add),
-          ),
-        ] : [
-          const CartStokButton(),
-        ],
+        actions: isPriceJual()
+            ? [
+                const SearchButton(),
+                const CartButton(),
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/formProduk');
+                  },
+                  tooltip: 'Tambah Produk',
+                  icon: const Icon(Icons.add),
+                ),
+              ]
+            : [
+                const SearchButton(
+                  priceType: ProductsPriceType.stok,
+                ),
+                const CartStokButton(),
+              ],
       ),
       body: Stack(
         children: [

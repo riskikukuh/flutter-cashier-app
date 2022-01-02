@@ -12,6 +12,7 @@ class CartButton extends StatelessWidget {
         Stack(
           children: [
             IconButton(
+              tooltip: 'Keranjang',
               onPressed: () {
                 context.read<CartBloc>().add(GetAllCart());
                 Navigator.of(context).pushNamed('/cart');

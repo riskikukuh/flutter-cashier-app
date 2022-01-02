@@ -1,6 +1,7 @@
 import 'package:kasir_app/src/bloc/cart_bloc.dart';
 import 'package:kasir_app/src/bloc/cartstok_bloc.dart';
 import 'package:kasir_app/src/bloc/customer_bloc.dart';
+import 'package:kasir_app/src/bloc/filteredproducts_bloc.dart';
 import 'package:kasir_app/src/bloc/products_bloc.dart';
 import 'package:kasir_app/src/bloc/supplier_bloc.dart';
 import 'package:kasir_app/src/bloc/transaksi_bloc.dart';
@@ -195,6 +196,11 @@ class MyApp extends StatelessWidget {
             transaksiStokRepository: transaksiStokRepository,
           ),
         ),
+        BlocProvider(
+          create: (context) => FilteredproductsBloc(
+            productsBloc: context.read<ProductsBloc>(),
+          ),
+        ),
       ],
       child: MaterialApp(
         title: 'Cashier App',
@@ -202,7 +208,9 @@ class MyApp extends StatelessWidget {
           '/login': (context) => LoginScreen(),
           '/home': (context) => const HomeScreen(),
           '/produk': (context) => ProductsScreen(),
-          '/produkStok': (context) => ProductsScreen(priceType: ProductsPriceType.stok,),
+          '/produkStok': (context) => ProductsScreen(
+                priceType: ProductsPriceType.stok,
+              ),
           '/formProduk': (context) => const FormProductScreen(),
           '/supplier': (context) => const SupplierScreen(),
           '/formSupplier': (context) => const FormSupplierScreen(),

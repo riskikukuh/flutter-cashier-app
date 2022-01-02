@@ -21,11 +21,14 @@ class TransaksiStokScreen extends StatelessWidget {
           'Transaksi Stok',
         ),
         actions: [
-          InkWell(
-            child: const Center(child: Text('New Stok')),
-            onTap: () {
+          IconButton(
+            onPressed: () {
               Navigator.of(context).pushNamed('/produkStok');
             },
+            tooltip: 'Tambah Transaksi Stok',
+            icon: const Icon(
+              Icons.add,
+            ),
           ),
           const SizedBox(width: 6),
         ],
@@ -94,8 +97,7 @@ class TransaksiStokScreen extends StatelessWidget {
                               Expanded(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       transaksi.stok.first.produk.nama,
@@ -105,8 +107,7 @@ class TransaksiStokScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      transaksi.stok.first.quantity
-                                              .toString() +
+                                      transaksi.stok.first.quantity.toString() +
                                           ' pcs',
                                     ),
                                   ],
