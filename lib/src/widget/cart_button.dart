@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kasir_app/src/bloc/cart_bloc.dart';
+import 'package:kasir_app/src/resources/util.dart';
 
 class CartButton extends StatelessWidget {
-  const CartButton({Key? key}) : super(key: key);
+  final bool showNotif;
+  const CartButton({
+    Key? key,
+    this.showNotif = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +33,14 @@ class CartButton extends StatelessWidget {
                   color: Colors.blueGrey,
                   shape: BoxShape.circle,
                 ),
-                child: BlocBuilder<CartBloc, CartState>(
+                child: BlocConsumer<CartBloc, CartState>(
+                  listener: (context, state) {
+                    if (showNotif) {
+                      if (state is CartMessage) {
+                        Util.showSnackbar(context, state.message);
+                      }
+                    }
+                  },
                   builder: (context, state) {
                     if (state is CartFetched) {
                       int count = state.order.length;

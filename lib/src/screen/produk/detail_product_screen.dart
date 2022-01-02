@@ -33,7 +33,7 @@ class DetailProductScreen extends StatelessWidget {
           'Detail Produk',
         ),
         actions: isPriceJual() ? [
-          const CartButton(),
+          const CartButton(showNotif: true),
           PopupMenuButton(
             onSelected: (item) {
               if (item == 0) {
@@ -63,7 +63,7 @@ class DetailProductScreen extends StatelessWidget {
             ],
           ),
         ] : [
-          const CartStokButton(),
+          const CartStokButton(showNotif: true),
         ],
       ),
       body: Container(

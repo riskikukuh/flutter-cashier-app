@@ -12,6 +12,21 @@ class CartFetched extends CartState {
   });
 }
 
+class CartMessage extends CartState {
+  final String message;
+  CartMessage({
+    required this.message,
+  });
+}
+
+class CartNotifSuccess extends CartMessage {
+  CartNotifSuccess({String? message}) : super(message: message ?? 'CartNotifSuccess');
+}
+
+class CartNotifError extends CartMessage {
+  CartNotifError({String? message}) : super(message: message ?? 'CartNotifSuccess');
+}
+
 class CartError extends CartState {
   final String message;
   CartError({

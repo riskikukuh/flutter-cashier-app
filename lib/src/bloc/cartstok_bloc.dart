@@ -40,13 +40,19 @@ class CartstokBloc extends Bloc<CartstokEvent, CartstokState> {
       Result<CartStokModel> resultInsertCartStok =
           await cartStokRepository.addCartStok(params);
       if (resultInsertCartStok is Success<CartStokModel>) {
-        emit(CartStokNotifSuccess(
-            message: 'Produk berhasil ditambahkan ke keranjang stok'));
-        allCartStok.add(resultInsertCartStok.data);
-        emit(CartStokLoadSuccess(cartStok: allCartStok));
+        bool isAlreadyAdded = allCartStok.where((cartStok) => cartStok.produk.id == resultInsertCartStok.data.produk.id).isNotEmpty;
+        if (isAlreadyAdded) {
+          emit(CartStokNotifSuccess(message: 'Produk sudah ditambahkan ke keranjang stok'));
+          emit(CartStokLoadSuccess(cartStok: allCartStok));
+        } else {
+          emit(CartStokNotifSuccess(message: 'Berhasil menambahkan ke keranjang stok'));
+          emit(CartStokLoadSuccess(cartStok: allCartStok..add(resultInsertCartStok.data)));
+        }
       } else {
         Error error = resultInsertCartStok as Error;
+        emit(CartStokNotifError(message: error.message));
         emit(CartStokError(message: error.message));
+        emit(CartStokLoadSuccess(cartStok: allCartStok));
       }
     });
 

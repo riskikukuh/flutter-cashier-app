@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kasir_app/src/bloc/cartstok_bloc.dart';
+import 'package:kasir_app/src/resources/util.dart';
 
 class CartStokButton extends StatelessWidget {
-  const CartStokButton({Key? key}) : super(key: key);
+  final bool showNotif;
+  const CartStokButton({Key? key, this.showNotif = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class CartStokButton extends StatelessWidget {
               tooltip: 'Keranjang Stok',
               onPressed: () {
                 context.read<CartstokBloc>().add(GetAllCartStok());
-                Navigator.of(context).pushNamed('/cartStok', arguments: { "asd" : 1});
+                Navigator.of(context).pushNamed('/cartStok');
               },
               icon: const Icon(Icons.shopping_cart),
             ),
@@ -28,7 +30,14 @@ class CartStokButton extends StatelessWidget {
                   color: Colors.blueGrey,
                   shape: BoxShape.circle,
                 ),
-                child: BlocBuilder<CartstokBloc, CartstokState>(
+                child: BlocConsumer<CartstokBloc, CartstokState>(
+                  listener: (context, state) {
+                    if (showNotif) {
+                      if (state is CartStokMessage) {
+                        Util.showSnackbar(context, state.message);
+                      }
+                    }
+                  },
                   builder: (context, state) {
                     if (state is CartStokLoadSuccess) {
                       int count = state.cartStok.length;

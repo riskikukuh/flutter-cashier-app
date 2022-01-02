@@ -56,13 +56,14 @@ class CheckoutScreen extends StatelessWidget {
                       if (state is CustomerError) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text(state.message)));
-                      } else if (state is CustomerLoadSuccess) {
-                        
-                      }
+                      } 
                     },
                     builder: (context, state) {
                       List<CustomerModel> allCustomer = [];
                       if (state is CustomerLoadSuccess) {
+                        if (state.allCustomer.isNotEmpty) {
+                          _customer = state.allCustomer.first;
+                        }
                         allCustomer.addAll(state.allCustomer);
                       }
                       return DropdownSearch<CustomerModel>(

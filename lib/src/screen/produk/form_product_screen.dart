@@ -108,6 +108,9 @@ class _FormProductScreenState extends State<FormProductScreen> {
             builder: (context, state) {
               List<SupplierModel> allSupplier = [];
               if (state is SupplierLoadSuccess) {
+                if (state.allSupplier.isNotEmpty) {
+                  _supplier = state.allSupplier.first;
+                }
                 allSupplier.addAll(state.allSupplier);
               }
               return DropdownSearch<SupplierModel>(

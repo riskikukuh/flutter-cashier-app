@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:kasir_app/src/models/order_model.dart';
+import 'package:kasir_app/src/models/produk_model.dart';
 import 'package:kasir_app/src/repository/cart_repository.dart';
 import 'package:kasir_app/src/resources/result.dart';
 import 'package:meta/meta.dart';
@@ -33,9 +34,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       Result<OrderModel> resultInsert =
           await cartRepository.addOrder(event.order);
       if (resultInsert is Success<OrderModel>) {
-        emit(CartFetched(order: oldOrder..add(resultInsert.data)));
+        bool isAlreadyAdded = oldOrder.where((order) => order.produk.id == resultInsert.data.produk.id).isNotEmpty;
+        if (isAlreadyAdded) {
+          emit(CartNotifSuccess(message: 'Produk sudah ditambahkan ke keranjang'));
+          emit(CartFetched(order: oldOrder));
+        } else {
+          emit(CartNotifSuccess(message: 'Berhasil menambahkan ke keranjang'));
+          emit(CartFetched(order: oldOrder..add(resultInsert.data)));
+        }
       } else {
         Error error = resultInsert as Error;
+        emit(CartNotifError(message: error.message));
         emit(CartError(
           message: error.message,
         ));

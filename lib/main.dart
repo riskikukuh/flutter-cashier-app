@@ -20,6 +20,7 @@ import 'package:kasir_app/src/config/database/sqlite/transaksi_stok_provider.dar
 import 'package:kasir_app/src/config/database/sqlite/user_provider.dart';
 import 'package:kasir_app/src/config/session/session_helper.dart';
 import 'package:kasir_app/src/dataSource/local/local_data_source.dart';
+import 'package:kasir_app/src/models/produk_model.dart';
 import 'package:kasir_app/src/repository/cart_repository.dart';
 import 'package:kasir_app/src/repository/cart_stok_repository.dart';
 import 'package:kasir_app/src/repository/customer_repository.dart';
@@ -35,6 +36,7 @@ import 'package:kasir_app/src/screen/checkout/checkout_screen.dart';
 import 'package:kasir_app/src/screen/checkout_stok/checkout_stok_screen.dart';
 import 'package:kasir_app/src/screen/customer/customer_screen.dart';
 import 'package:kasir_app/src/screen/customer/form_customer_screen.dart';
+import 'package:kasir_app/src/screen/home/products_stok_habis.dart';
 import 'package:kasir_app/src/screen/login/login_screen.dart';
 import 'package:kasir_app/src/screen/produk/form_product_screen.dart';
 import 'package:kasir_app/src/screen/produk/products_screen.dart';
@@ -206,7 +208,7 @@ class MyApp extends StatelessWidget {
         title: 'Cashier App',
         routes: {
           '/login': (context) => LoginScreen(),
-          '/home': (context) => const HomeScreen(),
+          '/home': (context) => HomeScreen(),
           '/produk': (context) => ProductsScreen(),
           '/produkStok': (context) => ProductsScreen(
                 priceType: ProductsPriceType.stok,
@@ -222,6 +224,7 @@ class MyApp extends StatelessWidget {
           '/checkoutStok': (context) => CheckoutStokScreen(),
           '/transaksi': (context) => TransaksiScreen(),
           '/transaksiStok': (context) => TransaksiStokScreen(),
+          '/productsStokHabis': (context) => ProductsStokHabisScreen(),
         },
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

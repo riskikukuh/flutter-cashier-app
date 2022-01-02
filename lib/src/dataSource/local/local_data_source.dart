@@ -167,7 +167,7 @@ class LocalDataSource {
         int currentQty = updateOrder.quantity ?? 1;
         int newQty = currentQty + order.quantity;
         if (newQty > order.produk.stok) {
-          return Error(message: 'Order tidak boleh melebihi jumlah stok !');
+          return Success(data: order.copyWith(quantity: order.produk.stok));
         } else {
           updateOrder.quantity = newQty;
         }
@@ -540,10 +540,22 @@ class LocalDataSource {
 
   Future<Result<CartStokModel>> addCartStok(CartStokModel cartStok) async {
     try {
-      int cartStokId = await dbHelper.cartStokProvider
-          .insert(mapCartStokModelToCartStokEntity(cartStok));
-      if (cartStokId > 0) {
-        return Success(data: cartStok.copyWith(id: cartStokId));
+      CartStokEntity? checkAlreadyOrder = await dbHelper.cartStokProvider
+          .getOrderByProdukId(cartStok.produk.id);
+      if (checkAlreadyOrder == null) {
+        int cartStokId = await dbHelper.cartStokProvider
+            .insert(mapCartStokModelToCartStokEntity(cartStok));
+        if (cartStokId > 0) {
+          return Success(data: cartStok.copyWith(id: cartStokId));
+        }
+      } else {
+        if (checkAlreadyOrder.quantity != null &&
+            checkAlreadyOrder.quantity! > 0) {
+          int newQty = cartStok.quantity + checkAlreadyOrder.quantity!;
+          return editCartStok(mapCartStokEntityToCartStokModel(
+                  checkAlreadyOrder, cartStok.produk)
+              .copyWith(quantity: newQty));
+        }
       }
       return Error(message: 'Gagal menambahkan produk ke keranjang stok');
     } on Exception catch (e) {
@@ -650,7 +662,7 @@ class LocalDataSource {
                   idTransaksiStok: transaksiStokId,
                 ));
               }
-            } 
+            }
           }
         });
         return Success(
