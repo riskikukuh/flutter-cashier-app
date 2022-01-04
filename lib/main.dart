@@ -40,6 +40,7 @@ import 'package:kasir_app/src/screen/home/products_stok_habis.dart';
 import 'package:kasir_app/src/screen/login/login_screen.dart';
 import 'package:kasir_app/src/screen/produk/form_product_screen.dart';
 import 'package:kasir_app/src/screen/produk/products_screen.dart';
+import 'package:kasir_app/src/screen/report/report_date_picker.dart';
 import 'package:kasir_app/src/screen/supplier/form_supplier_screen.dart';
 import 'package:kasir_app/src/screen/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -225,6 +226,15 @@ class MyApp extends StatelessWidget {
           '/transaksi': (context) => TransaksiScreen(),
           '/transaksiStok': (context) => TransaksiStokScreen(),
           '/productsStokHabis': (context) => ProductsStokHabisScreen(),
+        },
+        onGenerateRoute: (args) {
+          if (args.name == '/reportTransactionScreen') {
+            ReportDatePickerType type = args.arguments as ReportDatePickerType;
+            return MaterialPageRoute(
+                builder: (context) => ReportDatePicker(
+                      type: type,
+                    ));
+          }
         },
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

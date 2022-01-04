@@ -8,7 +8,10 @@ import 'package:kasir_app/src/bloc/supplier_bloc.dart';
 import 'package:kasir_app/src/bloc/transaksi_bloc.dart';
 import 'package:kasir_app/src/bloc/transaksistok_bloc.dart';
 import 'package:kasir_app/src/bloc/user_bloc.dart';
+import 'package:kasir_app/src/resources/enums.dart';
 import 'package:kasir_app/src/resources/util.dart';
+import 'package:kasir_app/src/screen/report/report_transaction.dart';
+import 'package:kasir_app/src/screen/report/report_date_picker.dart';
 
 class CashierDrawer extends StatelessWidget {
   const CashierDrawer({Key? key}) : super(key: key);
@@ -201,6 +204,21 @@ class CashierDrawer extends StatelessWidget {
                   Navigator.of(context).pushNamed('/transaksiStok');
                 },
               );
+            },
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text('Laporan Transaksi Penjualan'),
+            onTap: () {
+              Navigator.of(context).pushNamed('/reportTransactionScreen',
+                  arguments: ReportDatePickerType.transaksi);
+            },
+          ),
+          ListTile(
+            title: const Text('Laporan Laba Rugi'),
+            onTap: () {
+              Navigator.of(context).pushNamed('/reportTransactionScreen',
+                  arguments: ReportDatePickerType.labaRugi);
             },
           ),
           const Divider(),
