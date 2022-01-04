@@ -167,7 +167,7 @@ class LocalDataSource {
         int currentQty = updateOrder.quantity ?? 1;
         int newQty = currentQty + order.quantity;
         if (newQty > order.produk.stok) {
-          return Success(data: order.copyWith(quantity: order.produk.stok));
+          return Error(message: 'Stok tidak mencukupi');
         } else {
           updateOrder.quantity = newQty;
         }
@@ -180,6 +180,8 @@ class LocalDataSource {
           return Error(message: 'Gagal mengubah pesanan');
         }
       } else {
+        await dbHelper.productProvider
+            .verifyStok(order.produk.id, order.quantity);
         int insertedOrderId = await dbHelper.orderProvider
             .insert(mapOrderModelToOrderEntity(order));
         if (insertedOrderId > 0) {
