@@ -91,7 +91,7 @@ class _ReportTransactionState extends State<ReportTransaction> {
                       },
                     ),
                   ],
-                  pdfFileName: 'Laporan Transaksi Penjualan',
+                  pdfFileName: '${_now.millisecondsSinceEpoch} KasirApp - Laporan Transaksi Penjualan.pdf',
                   build: (format) => _generatePdf(
                     format,
                     pw.PageOrientation.landscape,

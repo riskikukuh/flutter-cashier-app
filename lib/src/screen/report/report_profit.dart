@@ -43,7 +43,7 @@ class _ReportProfitState extends State<ReportProfit> {
       final file = File(
           '${output!.path}/${_now.millisecondsSinceEpoch} KasirApp - Laporan Laba Rugi.pdf');
       await file.writeAsBytes(await _generatePdf(format, orientation,
-          pendapatan: pendapatan, pengeluaran: pengeluaran));
+          pemasukan: pendapatan, pengeluaran: pengeluaran));
       Util.showSnackbar(context, 'Berhasil mengekspor laporan laba rugi');
     } on Exception catch (e) {
       Util.showSnackbar(context, e.toString());
@@ -63,7 +63,7 @@ class _ReportProfitState extends State<ReportProfit> {
             child: BlocConsumer<TransaksiBloc, TransaksiState>(
               listener: (context, state) {},
               builder: (context, state) {
-                int pendapatan = 0;
+                int pemasukan = 0;
                 if (state is TransaksiLoadSuccess) {
                   state.allTransaksi
                       .where((transaksi) =>
@@ -72,7 +72,7 @@ class _ReportProfitState extends State<ReportProfit> {
                           transaksi.tanggal <=
                               widget.endDate.millisecondsSinceEpoch)
                       .forEach((transaksi) {
-                    pendapatan += transaksi.price;
+                    pemasukan += transaksi.price;
                   });
                 }
                 return BlocBuilder<TransaksistokBloc, TransaksistokState>(
@@ -100,17 +100,17 @@ class _ReportProfitState extends State<ReportProfit> {
                             _savePdf(
                               pageFormat,
                               pw.PageOrientation.portrait,
-                              pendapatan,
+                              pemasukan,
                               pengeluaran,
                             );
                           },
                         ),
                       ],
-                      pdfFileName: 'Laporan Laba Rugi',
+                      pdfFileName: '${_now.millisecondsSinceEpoch} KasirApp - Laporan Laba Rugi.pdf',
                       build: (format) => _generatePdf(
                         format,
                         pw.PageOrientation.portrait,
-                        pendapatan: pendapatan,
+                        pemasukan: pemasukan,
                         pengeluaran: pengeluaran,
                       ),
                     );
@@ -157,7 +157,7 @@ class _ReportProfitState extends State<ReportProfit> {
   }
 
   List<pw.TableRow> _showContent({
-    int pendapatan = 0,
+    int pemasukan = 0,
     int pengeluaran = 0,
   }) {
     return [
@@ -168,7 +168,7 @@ class _ReportProfitState extends State<ReportProfit> {
             child: pw.Column(
               children: [
                 pw.Text(
-                  'Pendapatan',
+                  'Pemasukan',
                   style: pw.TextStyle(
                     fontWeight: pw.FontWeight.bold,
                   ),
@@ -187,7 +187,7 @@ class _ReportProfitState extends State<ReportProfit> {
             child: pw.Column(
               children: [
                 pw.Text(
-                  'Rp' + _numberFormat.format(pendapatan),
+                  'Rp' + _numberFormat.format(pemasukan),
                   style: pw.TextStyle(
                     fontWeight: pw.FontWeight.bold,
                   ),
@@ -260,7 +260,7 @@ class _ReportProfitState extends State<ReportProfit> {
             child: pw.Column(
               children: [
                 pw.Text(
-                  'Rp' + _numberFormat.format(pendapatan - pengeluaran),
+                  'Rp' + _numberFormat.format(pemasukan - pengeluaran),
                   style: pw.TextStyle(
                     fontWeight: pw.FontWeight.bold,
                     color: PdfColor.fromHex('#70454C'),
@@ -277,7 +277,7 @@ class _ReportProfitState extends State<ReportProfit> {
   Future<Uint8List> _generatePdf(
     PdfPageFormat format,
     pw.PageOrientation? orientation, {
-    int pendapatan = 0,
+    int pemasukan = 0,
     int pengeluaran = 0,
   }) async {
     final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
@@ -296,7 +296,7 @@ class _ReportProfitState extends State<ReportProfit> {
               pw.Table(
                 columnWidths: _tableColumnWidthSetting,
                 children: _showContent(
-                  pendapatan: pendapatan,
+                  pemasukan: pemasukan,
                   pengeluaran: pengeluaran,
                 ),
               ),

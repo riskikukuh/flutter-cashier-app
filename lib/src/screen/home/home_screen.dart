@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
             builder: (context, state) {
               if (state is ProductsLoadSuccess) {
                 List<ProdukModel> allProduk =
-                    state.allProduk.where((produk) => produk.stok < 5).toList();
+                    state.allProduk.where((produk) => produk.stok <= 5).toList();
                 if (allProduk.isEmpty) return const SizedBox();
                 ProdukModel produk = allProduk.first;
                 return Column(
