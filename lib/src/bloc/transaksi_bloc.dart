@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:kasir_app/src/bloc/cart_bloc.dart';
 import 'package:kasir_app/src/bloc/products_bloc.dart';
 import 'package:kasir_app/src/models/customer_model.dart';
-import 'package:kasir_app/src/models/order_model.dart';
+import 'package:kasir_app/src/models/cart_model.dart';
 import 'package:kasir_app/src/models/transaksi_model.dart';
 import 'package:kasir_app/src/repository/transaksi_repository.dart';
 import 'package:kasir_app/src/resources/mapper.dart';
@@ -39,7 +39,7 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
 
     on<AddTransaksi>((event, emit) async {
       if (cartBloc.state is CartFetched) {
-        List<OrderModel> allOrder = (cartBloc.state as CartFetched).order;
+        List<CartModel> allOrder = (cartBloc.state as CartFetched).order;
         int price = 0;
         for (var order in allOrder) {
           price += order.quantity * order.produk.hargaJual;
@@ -53,7 +53,7 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
             id: -1,
             pembeli: event.customer,
             orders: allOrder
-                .map((order) => mapOrderModelToTransaksiOrderModel(order))
+                .map((order) => mapCartModelToDetailTransaksiModel(order))
                 .toList(),
             tanggal: DateTime.now().millisecondsSinceEpoch,
             keterangan: event.keterangan,

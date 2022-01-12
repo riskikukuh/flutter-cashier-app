@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:kasir_app/src/bloc/cart_bloc.dart';
 import 'package:kasir_app/src/bloc/cartstok_bloc.dart';
 import 'package:kasir_app/src/bloc/products_bloc.dart';
-import 'package:kasir_app/src/models/order_model.dart';
+import 'package:kasir_app/src/models/cart_model.dart';
 import 'package:kasir_app/src/models/produk_model.dart';
 import 'package:kasir_app/src/resources/enums.dart';
 import 'package:kasir_app/src/resources/util.dart';
@@ -186,7 +186,7 @@ class DetailProductScreen extends StatelessWidget {
           onPressed: () {
             if (isPriceJual()) {
               context.read<CartBloc>().add(AddOrder(
-                      order: OrderModel(
+                      order: CartModel(
                     id: -1,
                     quantity: 1,
                     date: DateTime.now().millisecondsSinceEpoch,

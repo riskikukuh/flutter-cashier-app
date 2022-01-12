@@ -1,10 +1,10 @@
 import 'package:kasir_app/src/config/database/sqlite/cart_stok_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/customer_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/detail_transaksi_stok_provider.dart';
-import 'package:kasir_app/src/config/database/sqlite/order_provider.dart';
+import 'package:kasir_app/src/config/database/sqlite/cart_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/product_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/supplier_provider.dart';
-import 'package:kasir_app/src/config/database/sqlite/transaction_order_provider.dart';
+import 'package:kasir_app/src/config/database/sqlite/detail_transaction_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/transaction_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/transaksi_stok_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/user_provider.dart';
@@ -14,10 +14,10 @@ import 'package:path/path.dart';
 class DatabaseHelper {
   ProductProvider productProvider;
   TransaksiProvider transaksiProvider;
-  OrderProvider orderProvider;
+  CartProvider orderProvider;
   CustomerProvider customerProvider;
   SupplierProvider supplierProvider;
-  TransaksiOrderProvider transaksiOrderProvider;
+  DetailTransaksiProvider transaksiOrderProvider;
   UserProvider userProvider;
   TransaksiStokProvider transaksiStokProvider;
   DetailTransaksiStokProvider detailTransaksiStokProvider;

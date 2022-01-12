@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:kasir_app/src/models/order_model.dart';
-import 'package:kasir_app/src/models/produk_model.dart';
+import 'package:kasir_app/src/models/cart_model.dart';
 import 'package:kasir_app/src/repository/cart_repository.dart';
 import 'package:kasir_app/src/resources/result.dart';
 import 'package:meta/meta.dart';
@@ -16,8 +15,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   }) : super(CartInitial()) {
     on<GetAllCart>((event, emit) async {
       emit(CartLoading());
-      Result<List<OrderModel>> allOrder = await cartRepository.getAllOrder();
-      if (allOrder is Success<List<OrderModel>>) {
+      Result<List<CartModel>> allOrder = await cartRepository.getAllCart();
+      if (allOrder is Success<List<CartModel>>) {
         emit(CartFetched(order: allOrder.data));
       } else {
         Error error = allOrder as Error;
@@ -26,14 +25,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     });
 
     on<AddOrder>((event, emit) async {
-      List<OrderModel> oldOrder = [];
+      List<CartModel> oldOrder = [];
       if (state is CartFetched) {
         oldOrder.addAll((state as CartFetched).order);
       }
       emit(CartLoading());
-      Result<OrderModel> resultInsert =
-          await cartRepository.addOrder(event.order);
-      if (resultInsert is Success<OrderModel>) {
+      Result<CartModel> resultInsert =
+          await cartRepository.addCart(event.order);
+      if (resultInsert is Success<CartModel>) {
         bool isAlreadyAdded = oldOrder.where((order) => order.produk.id == resultInsert.data.produk.id).isNotEmpty;
         if (isAlreadyAdded) {
           emit(CartNotifSuccess(message: 'Produk sudah ditambahkan ke keranjang'));
@@ -54,7 +53,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
     on<DeleteOrder>((event, emit) async {
       emit(CartLoading());
-      Result<bool> resultDelete = await cartRepository.deleteOrder(event.order);
+      Result<bool> resultDelete = await cartRepository.deleteCart(event.order);
       if (resultDelete is Success<bool>) {
         add(GetAllCart());
       } else {
@@ -66,15 +65,15 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     });
 
     on<EditOrder>((event, emit) async {
-      List<OrderModel> allOrder = [];
+      List<CartModel> allOrder = [];
       if (state is CartFetched) {
         allOrder.addAll((state as CartFetched).order);
       }
-      List<OrderModel> oldOrder = (state as CartFetched).order;
+      List<CartModel> oldOrder = (state as CartFetched).order;
       emit(CartLoading());
-      Result<OrderModel> editedOrder =
-          await cartRepository.editOrder(event.order);
-      if (editedOrder is Success<OrderModel>) {
+      Result<CartModel> editedOrder =
+          await cartRepository.editCart(event.order);
+      if (editedOrder is Success<CartModel>) {
         emit(CartFetched(
           order: oldOrder
               .map(
@@ -92,7 +91,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     });
 
     on<ClearCart>((event, emit) async {
-      List<OrderModel> allOrder = [];
+      List<CartModel> allOrder = [];
       if (state is CartFetched) {
         allOrder.addAll((state as CartFetched).order);
       }

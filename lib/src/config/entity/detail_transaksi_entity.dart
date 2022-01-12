@@ -1,5 +1,5 @@
-class TransaksiOrderEntity {
-  static const String tableName = 'transaksi_order';
+class DetailTransaksiEntity {
+  static const String tableName = 'detail_transaksi';
   static const String columnId = '_id';
   static const String columnIdTransaksi = 'id_transaksi';
   static const String columnIdProduk = 'id_produk';
@@ -10,14 +10,14 @@ class TransaksiOrderEntity {
   int? idProduk;
   int? quantity;
 
-  TransaksiOrderEntity({
+  DetailTransaksiEntity({
     this.id,
     this.idTransaksi,
     this.idProduk,
     this.quantity,
   });
 
-  TransaksiOrderEntity.fromMap(Map<String, Object?> map) {
+  DetailTransaksiEntity.fromMap(Map<String, Object?> map) {
     id = map[columnId] as int?;
     idTransaksi = map[columnIdTransaksi] as int?;
     idProduk = map[columnIdProduk] as int?;

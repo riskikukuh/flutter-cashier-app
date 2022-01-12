@@ -6,7 +6,7 @@ abstract class CartState {}
 class CartInitial extends CartState {}
 
 class CartFetched extends CartState {
-  final List<OrderModel> order;
+  final List<CartModel> order;
   CartFetched({
     required this.order,
   });

@@ -1,12 +1,12 @@
 import 'package:kasir_app/src/models/customer_model.dart';
-import 'package:kasir_app/src/models/transaksi_order_model.dart';
+import 'package:kasir_app/src/models/detail_transaksi_model.dart';
 
 class TransaksiModel {
   final int id;
   CustomerModel? pembeli;
   final int tanggal;
   final String keterangan;
-  final List<TransaksiOrderModel> orders;
+  final List<DetailTransaksiModel> orders;
   final int price;
 
   TransaksiModel({
@@ -23,7 +23,7 @@ class TransaksiModel {
     CustomerModel? pembeli,
     int? tanggal,
     String? keterangan,
-    List<TransaksiOrderModel>? orders,
+    List<DetailTransaksiModel>? orders,
     int? price,
   }) {
     return TransaksiModel(

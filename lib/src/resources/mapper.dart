@@ -1,21 +1,21 @@
 import 'package:kasir_app/src/config/entity/cart_stok_entity.dart';
 import 'package:kasir_app/src/config/entity/customer_entity.dart';
 import 'package:kasir_app/src/config/entity/detail_transaksi_stok_entity.dart';
-import 'package:kasir_app/src/config/entity/order_entity.dart';
+import 'package:kasir_app/src/config/entity/cart_entity.dart';
 import 'package:kasir_app/src/config/entity/produk_entity.dart';
 import 'package:kasir_app/src/config/entity/supplier_entity.dart';
 import 'package:kasir_app/src/config/entity/transaksi_entity.dart';
-import 'package:kasir_app/src/config/entity/transaksi_order_entity.dart';
+import 'package:kasir_app/src/config/entity/detail_transaksi_entity.dart';
 import 'package:kasir_app/src/config/entity/transaksi_stok_entity.dart';
 import 'package:kasir_app/src/config/entity/user_entity.dart';
 import 'package:kasir_app/src/models/cart_stok_model.dart';
 import 'package:kasir_app/src/models/customer_model.dart';
 import 'package:kasir_app/src/models/detail_transaksi_stok_model.dart';
-import 'package:kasir_app/src/models/order_model.dart';
+import 'package:kasir_app/src/models/cart_model.dart';
 import 'package:kasir_app/src/models/produk_model.dart';
 import 'package:kasir_app/src/models/supplier_model.dart';
 import 'package:kasir_app/src/models/transaksi_model.dart';
-import 'package:kasir_app/src/models/transaksi_order_model.dart';
+import 'package:kasir_app/src/models/detail_transaksi_model.dart';
 import 'package:kasir_app/src/models/transaksi_stok_model.dart';
 import 'package:kasir_app/src/models/user_model.dart';
 
@@ -58,18 +58,8 @@ UserEntity mapUserModelToUserEntity(UserModel user) {
   );
 }
 
-// TransaksiModel mapTransaksiEntityToTransaksiModel(TransaksiEntity produk) {
-//   return TransaksiModel(
-//     id: produk.id ?? -1,
-//     // idPembeli: produk.idPembeli ?? -1,
-//     tanggal: produk.tanggal ?? DateTime.now().millisecondsSinceEpoch,
-//     keterangan: produk.keterangan ?? '',
-//     orders: [],
-//   );
-// }
-
-OrderEntity mapOrderModelToOrderEntity(OrderModel order) {
-  return OrderEntity(
+CartEntity mapCartModelToCartEntity(CartModel order) {
+  return CartEntity(
     id: order.id,
     date: order.date,
     produk: order.produk.id,
@@ -77,8 +67,8 @@ OrderEntity mapOrderModelToOrderEntity(OrderModel order) {
   );
 }
 
-OrderModel mapOrderEntityToOrderModel(OrderEntity order, ProdukModel produk) {
-  return OrderModel(
+CartModel mapCartEntityToCartModel(CartEntity order, ProdukModel produk) {
+  return CartModel(
     id: order.id ?? -1,
     date: order.date ?? -1,
     quantity: order.quantity ?? -1,
@@ -125,7 +115,7 @@ SupplierEntity mapSupplierModelToSupplierEntity(SupplierModel supplier) {
 }
 
 TransaksiModel mapTransaksiEntityToTransaksiModel(TransaksiEntity transaksi,
-    List<TransaksiOrderModel> orders, CustomerModel customer) {
+    List<DetailTransaksiModel> orders, CustomerModel customer) {
   return TransaksiModel(
     id: transaksi.id ?? -1,
     tanggal: transaksi.tanggal ?? -1,
@@ -146,9 +136,9 @@ TransaksiEntity mapTransaksiModelToTransaksiEntity(TransaksiModel transaksi) {
   );
 }
 
-TransaksiOrderEntity mapTransaksiOrderModelToTransaksiOrderEntity(
-    int transaksiId, TransaksiOrderModel transaksiOrder) {
-  return TransaksiOrderEntity(
+DetailTransaksiEntity mapDetailTransaksiModelToDetailTransaksiEntity(
+    int transaksiId, DetailTransaksiModel transaksiOrder) {
+  return DetailTransaksiEntity(
     id: transaksiOrder.id,
     idProduk: transaksiOrder.produk.id,
     idTransaksi: transaksiId,
@@ -156,8 +146,8 @@ TransaksiOrderEntity mapTransaksiOrderModelToTransaksiOrderEntity(
   );
 }
 
-TransaksiOrderModel mapOrderModelToTransaksiOrderModel(OrderModel order) {
-  return TransaksiOrderModel(
+DetailTransaksiModel mapCartModelToDetailTransaksiModel(CartModel order) {
+  return DetailTransaksiModel(
     id: -1,
     idTransaksi: -1,
     produk: order.produk,

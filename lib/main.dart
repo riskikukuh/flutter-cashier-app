@@ -11,10 +11,10 @@ import 'package:kasir_app/src/config/database/sqlite/cart_stok_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/customer_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/database_helper.dart';
 import 'package:kasir_app/src/config/database/sqlite/detail_transaksi_stok_provider.dart';
-import 'package:kasir_app/src/config/database/sqlite/order_provider.dart';
+import 'package:kasir_app/src/config/database/sqlite/cart_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/product_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/supplier_provider.dart';
-import 'package:kasir_app/src/config/database/sqlite/transaction_order_provider.dart';
+import 'package:kasir_app/src/config/database/sqlite/detail_transaction_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/transaction_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/transaksi_stok_provider.dart';
 import 'package:kasir_app/src/config/database/sqlite/user_provider.dart';
@@ -54,11 +54,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final ProductProvider productProvider = ProductProvider();
   final TransaksiProvider transaksiProvider = TransaksiProvider();
-  final OrderProvider orderProvider = OrderProvider();
+  final CartProvider orderProvider = CartProvider();
   final CustomerProvider customerProvider = CustomerProvider();
   final SupplierProvider supplierProvider = SupplierProvider();
-  final TransaksiOrderProvider transaksiOrderProvider =
-      TransaksiOrderProvider();
+  final DetailTransaksiProvider transaksiOrderProvider =
+      DetailTransaksiProvider();
   final UserProvider userProvider = UserProvider();
   final TransaksiStokProvider transaksiStokProvider = TransaksiStokProvider();
   final DetailTransaksiStokProvider detailTransaksiStokProvider =

@@ -2,22 +2,22 @@ import 'package:kasir_app/src/config/database/sqlite/database_helper.dart';
 import 'package:kasir_app/src/config/entity/cart_stok_entity.dart';
 import 'package:kasir_app/src/config/entity/customer_entity.dart';
 import 'package:kasir_app/src/config/entity/detail_transaksi_stok_entity.dart';
-import 'package:kasir_app/src/config/entity/order_entity.dart';
+import 'package:kasir_app/src/config/entity/cart_entity.dart';
 import 'package:kasir_app/src/config/entity/produk_entity.dart';
 import 'package:kasir_app/src/config/entity/supplier_entity.dart';
 import 'package:kasir_app/src/config/entity/transaksi_entity.dart';
-import 'package:kasir_app/src/config/entity/transaksi_order_entity.dart';
+import 'package:kasir_app/src/config/entity/detail_transaksi_entity.dart';
 import 'package:kasir_app/src/config/entity/transaksi_stok_entity.dart';
 import 'package:kasir_app/src/config/entity/user_entity.dart';
 import 'package:kasir_app/src/config/session/session_helper.dart';
 import 'package:kasir_app/src/models/cart_stok_model.dart';
 import 'package:kasir_app/src/models/customer_model.dart';
 import 'package:kasir_app/src/models/detail_transaksi_stok_model.dart';
-import 'package:kasir_app/src/models/order_model.dart';
+import 'package:kasir_app/src/models/cart_model.dart';
 import 'package:kasir_app/src/models/produk_model.dart';
 import 'package:kasir_app/src/models/supplier_model.dart';
 import 'package:kasir_app/src/models/transaksi_model.dart';
-import 'package:kasir_app/src/models/transaksi_order_model.dart';
+import 'package:kasir_app/src/models/detail_transaksi_model.dart';
 import 'package:kasir_app/src/models/transaksi_stok_model.dart';
 import 'package:kasir_app/src/models/user_model.dart';
 import 'package:kasir_app/src/resources/mapper.dart';
@@ -135,19 +135,19 @@ class LocalDataSource {
     }
   }
 
-  Future<Result<List<OrderModel>>> getAllOrder() async {
+  Future<Result<List<CartModel>>> getAllCart() async {
     try {
-      List<OrderEntity> order = await dbHelper.orderProvider.getAllOrder();
-      List<OrderModel> allOrder = [];
+      List<CartEntity> order = await dbHelper.orderProvider.getAllOrder();
+      List<CartModel> allOrder = [];
       await Future.forEach(order, (singleOrder) async {
         if (singleOrder != null) {
-          singleOrder as OrderEntity;
+          singleOrder as CartEntity;
           if (singleOrder.produk != null) {
             Result<ProdukModel> produkResult =
                 await getProdukById(singleOrder.produk!);
             if (produkResult is Success) {
               ProdukModel produk = (produkResult as Success<ProdukModel>).data;
-              allOrder.add(mapOrderEntityToOrderModel(singleOrder, produk));
+              allOrder.add(mapCartEntityToCartModel(singleOrder, produk));
             }
           }
         }
@@ -158,12 +158,12 @@ class LocalDataSource {
     }
   }
 
-  Future<Result<OrderModel>> addOrder(OrderModel order) async {
+  Future<Result<CartModel>> addCart(CartModel order) async {
     try {
-      OrderEntity? checkAlreadyOrder =
+      CartEntity? checkAlreadyOrder =
           await dbHelper.orderProvider.getOrderByProdukId(order.produk.id);
       if (checkAlreadyOrder != null) {
-        OrderEntity updateOrder = checkAlreadyOrder;
+        CartEntity updateOrder = checkAlreadyOrder;
         int currentQty = updateOrder.quantity ?? 1;
         int newQty = currentQty + order.quantity;
         if (newQty > order.produk.stok) {
@@ -175,7 +175,7 @@ class LocalDataSource {
             await dbHelper.orderProvider.update(updateOrder);
         if (resultUpdateOrder > 0) {
           return Success(
-              data: mapOrderEntityToOrderModel(updateOrder, order.produk));
+              data: mapCartEntityToCartModel(updateOrder, order.produk));
         } else {
           return Error(message: 'Gagal mengubah pesanan');
         }
@@ -183,9 +183,9 @@ class LocalDataSource {
         await dbHelper.productProvider
             .verifyStok(order.produk.id, order.quantity);
         int insertedOrderId = await dbHelper.orderProvider
-            .insert(mapOrderModelToOrderEntity(order));
+            .insert(mapCartModelToCartEntity(order));
         if (insertedOrderId > 0) {
-          OrderModel newOrder = order.copyWith(id: insertedOrderId);
+          CartModel newOrder = order.copyWith(id: insertedOrderId);
           return Success(data: newOrder);
         } else {
           return Error(message: 'Gagal menambahkan pesanan');
@@ -196,10 +196,10 @@ class LocalDataSource {
     }
   }
 
-  Future<Result<OrderModel>> editOrder(OrderModel order) async {
+  Future<Result<CartModel>> editCart(CartModel order) async {
     try {
       int orderResult = await dbHelper.orderProvider
-          .update(mapOrderModelToOrderEntity(order));
+          .update(mapCartModelToCartEntity(order));
       if (orderResult > 0) {
         return Success(data: order);
       } else {
@@ -210,10 +210,10 @@ class LocalDataSource {
     }
   }
 
-  Future<Result<bool>> deleteOrder(OrderModel order) async {
+  Future<Result<bool>> deleteCart(CartModel order) async {
     try {
       int resultDeleteOrder = await dbHelper.orderProvider
-          .delete(mapOrderModelToOrderEntity(order));
+          .delete(mapCartModelToCartEntity(order));
       return Success(data: resultDeleteOrder > 0);
     } on Exception catch (e) {
       return Error(message: e.toString());
@@ -380,18 +380,18 @@ class LocalDataSource {
           await dbHelper.transaksiProvider.getAllTransaksi();
       await Future.forEach<TransaksiEntity>(allTransaksi, (transaksi) async {
         if (transaksi.id != null) {
-          List<TransaksiOrderModel> resultAllOrder = [];
-          List<TransaksiOrderEntity> listOrder = await dbHelper
+          List<DetailTransaksiModel> resultAllOrder = [];
+          List<DetailTransaksiEntity> listOrder = await dbHelper
               .transaksiOrderProvider
               .getAllOrderByTransaksiId(transaksi.id!);
-          await Future.forEach<TransaksiOrderEntity>(listOrder, (order) async {
+          await Future.forEach<DetailTransaksiEntity>(listOrder, (order) async {
             if (order.id != null) {
               ProdukEntity? produk =
                   await dbHelper.productProvider.getProdukById(order.idProduk!);
               if (produk != null) {
                 SupplierEntity? supplier = await dbHelper.supplierProvider
                     .getSupplierById(produk.supplier ?? 0);
-                resultAllOrder.add(TransaksiOrderModel(
+                resultAllOrder.add(DetailTransaksiModel(
                   id: order.id!,
                   idTransaksi: transaksi.id!,
                   produk: mapProdukEntityToProdukModel(produk, supplier),
@@ -424,7 +424,7 @@ class LocalDataSource {
 
   Future<Result<TransaksiModel>> addTransaksi(TransaksiModel transaksi) async {
     try {
-      await Future.forEach<TransaksiOrderModel>(transaksi.orders,
+      await Future.forEach<DetailTransaksiModel>(transaksi.orders,
           (order) async {
         await dbHelper.productProvider
             .verifyStok(order.produk.id, order.quantity);
@@ -432,15 +432,15 @@ class LocalDataSource {
       int idTransaksi = await dbHelper.transaksiProvider
           .insert(mapTransaksiModelToTransaksiEntity(transaksi));
       if (idTransaksi > 0) {
-        List<TransaksiOrderModel> orders = [];
-        await Future.forEach<TransaksiOrderModel>(
+        List<DetailTransaksiModel> orders = [];
+        await Future.forEach<DetailTransaksiModel>(
           transaksi.orders,
           (order) async {
             int newStok = order.produk.stok - order.quantity;
             if (newStok >= 0) {
               int idTransaksiOrder =
                   await dbHelper.transaksiOrderProvider.insert(
-                mapTransaksiOrderModelToTransaksiOrderEntity(
+                mapDetailTransaksiModelToDetailTransaksiEntity(
                     idTransaksi, order),
               );
               if (idTransaksiOrder > 0) {

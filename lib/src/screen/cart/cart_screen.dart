@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:kasir_app/src/bloc/cart_bloc.dart';
 import 'package:kasir_app/src/bloc/transaksi_bloc.dart';
-import 'package:kasir_app/src/models/order_model.dart';
+import 'package:kasir_app/src/models/cart_model.dart';
 import 'package:kasir_app/src/resources/util.dart';
 
 class CartScreen extends StatelessWidget {
@@ -17,7 +17,7 @@ class CartScreen extends StatelessWidget {
   Widget _mapStateToWidget(BuildContext context, CartState state, Size size) {
     switch (state.runtimeType) {
       case CartFetched:
-        List<OrderModel> allOrder = (state as CartFetched).order;
+        List<CartModel> allOrder = (state as CartFetched).order;
 
         return RefreshIndicator(
           onRefresh: () async {
@@ -40,7 +40,7 @@ class CartScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   itemCount: allOrder.length,
                   itemBuilder: (context, i) {
-                    OrderModel order = allOrder[i];
+                    CartModel order = allOrder[i];
                     return Card(
                       elevation: 3,
                       child: Container(

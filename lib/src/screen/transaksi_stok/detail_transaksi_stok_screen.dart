@@ -63,7 +63,7 @@ class DetailTransaksiStokScreen extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    transaksi.keterangan,
+                    _dateFormat.format(_date),
                     style: const TextStyle(
                       color: Colors.black54,
                     ),
@@ -81,7 +81,7 @@ class DetailTransaksiStokScreen extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    _dateFormat.format(_date),
+                    transaksi.keterangan,
                     style: const TextStyle(
                       color: Colors.black54,
                     ),
