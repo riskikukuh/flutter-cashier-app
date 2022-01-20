@@ -54,7 +54,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                     height: 10,
                   ),
                   const Text(
-                    'Tanggal pembelian',
+                    'Tanggal Transaksi',
                     style: TextStyle(
                       fontSize: 17,
                     ),
@@ -72,7 +72,7 @@ class DetailTransaksiScreen extends StatelessWidget {
                     height: 10,
                   ),
                   const Text(
-                    'Catatan pembelian',
+                    'Catatan Transaksi',
                     style: TextStyle(
                       fontSize: 17,
                     ),

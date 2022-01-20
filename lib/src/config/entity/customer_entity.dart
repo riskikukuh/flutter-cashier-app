@@ -5,12 +5,14 @@ class CustomerEntity {
   static const String columnJk = 'jk';
   static const String columnNoTelp = 'no_telp';
   static const String columnAlamat = 'alamat';
+  static const String columnDeletedAt = 'deleted_at';
 
   int? id;
   String? nama;
   String? jk;
   String? noTelp;
   String? alamat;
+  int? deletedAt;
 
   CustomerEntity({
     this.id,
@@ -18,6 +20,7 @@ class CustomerEntity {
     this.jk,
     this.noTelp,
     this.alamat,
+    this.deletedAt,
   });
 
   Map<String, dynamic> toMap() {
@@ -27,6 +30,7 @@ class CustomerEntity {
       columnJk: jk,
       columnNoTelp: noTelp,
       columnAlamat: alamat,
+      columnDeletedAt: deletedAt,
     };
   }
 
@@ -36,6 +40,7 @@ class CustomerEntity {
       columnJk: jk,
       columnNoTelp: noTelp,
       columnAlamat: alamat,
+      columnDeletedAt: deletedAt,
     };
   }
 
@@ -45,5 +50,6 @@ class CustomerEntity {
     jk = map[columnJk] as String?;
     noTelp = map[columnNoTelp] as String?;
     alamat = map[columnAlamat] as String?;
+    deletedAt = map[columnDeletedAt] as int?;
   }
 }

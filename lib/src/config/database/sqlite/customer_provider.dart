@@ -15,24 +15,30 @@ class CustomerProvider {
           ${CustomerEntity.columnNama} text not null,
           ${CustomerEntity.columnJk} text not null,
           ${CustomerEntity.columnNoTelp} text not null,
-          ${CustomerEntity.columnAlamat} text not null)
+          ${CustomerEntity.columnAlamat} text not null,
+          ${CustomerEntity.columnDeletedAt} integer)
           ''');
-          
-          
-    await db?.insert(CustomerEntity.tableName, CustomerEntity(nama: 'guest', jk: 'P', alamat: 'guest', noTelp: 'guest').toMapWithoutId());
+
+    await db?.insert(
+        CustomerEntity.tableName,
+        CustomerEntity(nama: 'guest', jk: 'P', alamat: 'guest', noTelp: 'guest')
+            .toMapWithoutId());
   }
 
   Future close() async => await db?.close();
 
   Future<List<CustomerEntity>> getAllCustomer() async {
-    List<Map<String, Object?>>? allCustomer =
-        await db?.query(CustomerEntity.tableName, columns: [
-      CustomerEntity.columnId,
-      CustomerEntity.columnNama,
-      CustomerEntity.columnJk,
-      CustomerEntity.columnNoTelp,
-      CustomerEntity.columnAlamat,
-    ]);
+    List<Map<String, Object?>>? allCustomer = await db?.query(
+      CustomerEntity.tableName,
+      columns: [
+        CustomerEntity.columnId,
+        CustomerEntity.columnNama,
+        CustomerEntity.columnJk,
+        CustomerEntity.columnNoTelp,
+        CustomerEntity.columnAlamat,
+      ],
+      where: '${CustomerEntity.columnDeletedAt} IS NULL',
+    );
 
     if (allCustomer != null) {
       return allCustomer
@@ -53,7 +59,7 @@ class CustomerProvider {
         CustomerEntity.columnNoTelp,
         CustomerEntity.columnAlamat,
       ],
-      where: '${CustomerEntity.columnId} = ?',
+      where: '${CustomerEntity.columnDeletedAt} IS NULL AND ${CustomerEntity.columnId} = ?',
       whereArgs: [
         customerId,
       ],
@@ -66,7 +72,8 @@ class CustomerProvider {
   }
 
   Future<int> insert(CustomerEntity customer) async {
-    int? id = await db?.insert(CustomerEntity.tableName, customer.toMapWithoutId());
+    int? id =
+        await db?.insert(CustomerEntity.tableName, customer.toMapWithoutId());
 
     if (id != null && id > 0) {
       return id;
@@ -91,18 +98,19 @@ class CustomerProvider {
   }
 
   Future<int> delete(CustomerEntity customer) async {
-    int? resultDelete = await db?.delete(
+    int? resultDelete = await db?.update(
       CustomerEntity.tableName,
+      {
+        CustomerEntity.columnDeletedAt: DateTime.now().millisecondsSinceEpoch,
+      },
       where: '${CustomerEntity.columnId} = ?',
       whereArgs: [
         customer.id,
       ],
     );
-
     if (resultDelete != null && resultDelete > 0) {
       return resultDelete;
-    } else {
-      return -1;
     }
+    return -1;
   }
 }

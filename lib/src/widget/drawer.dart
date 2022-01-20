@@ -114,7 +114,7 @@ class CashierDrawer extends StatelessWidget {
                 countCustomer = state.order.length.toString();
               }
               return ListTile(
-                title: const Text('Keranjang Pembelian'),
+                title: const Text('Keranjang Penjualan'),
                 trailing: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: const BoxDecoration(
@@ -165,7 +165,7 @@ class CashierDrawer extends StatelessWidget {
                 countCustomer = state.allTransaksi.length.toString();
               }
               return ListTile(
-                title: const Text('Transaksi Pembelian'),
+                title: const Text('Transaksi Penjualan'),
                 trailing: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: const BoxDecoration(
